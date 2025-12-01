@@ -1,0 +1,10 @@
+Jotai
+Tsup
+Hapi
+JWT
+AWS
+S3
+SNS
+SQS
+11ty
+Joi

@@ -1,0 +1,88 @@
+ReactDOM
+SvelteKit
+SolidJS
+Vue
+Ember
+AlpineJS
+Foundation
+Material UI
+Emotion
+Stitches
+Zustand
+Jotai
+TanStack Query
+RTK Query
+Parcel
+Rollup
+Turbopack
+Tsup
+Playwright
+Hapi
+FeatherJS
+GraphQL Yoga
+Apollo Server
+Drizzle ORM
+Cassandra
+DynamoDB
+Firestore
+Neon
+FaunaDB
+CockroachDB
+Apollo Client
+Urql
+GraphQL Codegen
+Fetch
+Got
+gRPC
+OpenAPI
+SuperAgent
+Supabase Auth
+Firebase Auth
+NextAuth
+JWT
+Passport.js
+bcrypt
+argon2
+OpenAI SDK
+TensorFlow.js
+Vercel AI SDK
+Transformers.js
+GitLab CI
+Docker Compose
+Serverless Framework
+AWS
+Azure
+S3
+Lambda
+API Gateway
+CloudFront
+ECS
+Fargate
+SNS
+SQS
+RDS
+Firestore
+Firebase Auth
+Firebase Functions
+Firebase Hosting
+Firebase Storage
+Husky
+Lint-staged
+Commitizen
+11ty
+KeystoneJS
+Makefile
+Changesets
+Vercel Edge
+Netlify Edge
+React Native
+Day.js
+Moment.js
+Yup
+Joi
+RxJS
+D3.js
+Java
+C#
+PayPal SDK
+Shopify SDK
