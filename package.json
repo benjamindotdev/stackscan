@@ -26,7 +26,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/benjamin-elliott/stacksync.git"
+    "url": "https://github.com/benjamindotdev/stacksync.git"
   },
   "files": [
     "dist",
@@ -34,9 +34,9 @@
     "README.md",
     "LICENSE"
   ],
-  "homepage": "https://github.com/benjamin-elliott/stacksync#readme",
+  "homepage": "https://github.com/benjamindotdev/stacksync#readme",
   "bugs": {
-    "url": "https://github.com/benjamin-elliott/stacksync/issues"
+    "url": "https://github.com/benjamindotdev/stacksync/issues"
   },
   "dependencies": {
     "lucide-static": "^0.555.0"
