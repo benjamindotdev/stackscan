@@ -2,47 +2,118 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-Automatically detect the tech stack of any project and generate a JSON or markdown file — perfect for keeping your portfolio up to date.
+Automatically detect the tech stack of any project and generate structured output (JSON, Markdown, or badges).  
+Designed for portfolios, READMEs, dashboards, and CI automation.
+
+**Stack Sync** scans a repository (dependencies + file structure), normalizes detected technologies into categories, and maps them to logos with sensible fallbacks.
+
+---
 
 ## Features
 
-- 🔍 Detect dependencies from package.json
-- 🗂 Detect tech from file structure (Next.js, Prisma, Docker, CI)
-- 🖼 Includes built-in SVG logos
-- 💾 Generate `tech.json`, Markdown, or badges
-- 🤖 Optional GitHub Action to auto-update portfolios
-- 🔧 Fully configurable via `.stacksync.json`
+- 🔍 Detect dependencies from `package.json` and lockfiles
+- 🗂 Detect frameworks and tooling from file structure  
+  (e.g. Next.js, Prisma, Docker, CI)
+- 🖼 Built-in SVG logos with graceful fallbacks
+- 💾 Generate JSON, Markdown, or badge-friendly output
+- 🤖 Optional GitHub Action for auto-updating portfolios
+- 🔧 Fully configurable via `.stacksync.json` / config files
+- ⚙️ Deterministic output suitable for CI
+
+---
+
+## Install
+
+### One-off (recommended)
+```bash
+npx stacksync@latest
+````
+
+### Global
+
+```bash
+npm install -g stacksync
+stacksync
+```
+
+---
 
 ## Usage
 
 Run the CLI in your project root:
 
 ```bash
-# Default usage (scans current dir, outputs tech.json)
+# Default usage (scan current dir, outputs tech.json)
 npx stacksync
+```
 
-# Scan specific repo and output markdown
-npx stacksync ./my-project --out tech.md --format markdown --assets public/tech-stack
+Scan a specific repository and output Markdown:
 
-# Quick JSON output
+```bash
+npx stacksync ./my-project \
+  --out tech.md \
+  --format markdown \
+  --assets public/tech-stack
+```
+
+Quick JSON output (stdout or file):
+
+```bash
+npx stacksync --json
 npx stacksync --json --out stack.json
+```
 
-# Ignore specific packages
+Ignore specific packages or tools:
+
+```bash
 npx stacksync --ignore lodash,moment
 ```
 
+---
+
+## Output
+
+Stack Sync produces normalized metadata grouped by category and enriched with logo information.
+
+Example JSON output:
+
+```json
+{
+  "languages": ["TypeScript"],
+  "frameworks": ["Next.js"],
+  "backend": ["Node.js"],
+  "css": ["Tailwind CSS"],
+  "auth": ["Auth.js"],
+  "tooling": ["ESLint", "Prettier"],
+  "cloud": [],
+  "meta": {
+    "generatedAt": "2025-12-25T00:00:00.000Z",
+    "generator": "stacksync",
+    "version": "0.1.0"
+  }
+}
+```
+
+Anything without a known logo still renders cleanly using category defaults (e.g. a lock icon for auth).
+
+---
+
 ## Configuration
 
-You can configure StackSync by creating a `.stacksyncrc` or `stacksync.config.json` file in your project root.
+Stack Sync uses **cosmiconfig**. Create one of:
+
+* `.stacksyncrc`
+* `.stacksyncrc.json`
+* `stacksync.config.json`
 
 ### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `colorMode` | `string` | Global color mode: `default` (brand), `white`, `black`, or `custom`. |
-| `customColor` | `string` | Hex code to use when `colorMode` is set to `custom`. |
-| `iconColors` | `object` | Map of tech names to specific hex codes. Overrides global mode. |
-| `ignore` | `string[]` | List of package names to ignore. |
+| Option        | Type       | Description                               |
+| ------------- | ---------- | ----------------------------------------- |
+| `colorMode`   | `string`   | `default`, `white`, `black`, or `custom`  |
+| `customColor` | `string`   | Hex color used when `colorMode: "custom"` |
+| `iconColors`  | `object`   | Per-tech color overrides                  |
+| `ignore`      | `string[]` | Package / tech names to ignore            |
 
 ### Example `stacksync.config.json`
 
@@ -57,56 +128,85 @@ You can configure StackSync by creating a `.stacksyncrc` or `stacksync.config.js
 }
 ```
 
-## Development Workflow Summary
+---
 
-### Branch Strategy
+## Logo resolution
 
-1. **Feature Development**: Create feature branch from `main`
+Stack Sync resolves logos in the following order:
 
-   - Branch naming: `fix/descriptive-name` or `feature/descriptive-name`
+1. Built-in curated registry
+2. Known aliases (e.g. `next-auth` → **Auth.js**)
+3. External icon registries (when available)
+4. Category fallback icon (e.g. auth → lock)
 
-2. **Standard Merge Flow** ("normal workflow"):
+This guarantees usable output even when a logo is missing.
 
-   ```bash
-   # Create and work on feature branch
-   git checkout -b fix/feature-name
+---
 
-   # Commit and push feature branch
-   git add -A
-   git commit -m "descriptive commit message"
-   git push origin fix/feature-name
+## GitHub Actions (optional)
 
-   # Merge to dev
-   git checkout dev
-   git merge fix/feature-name
-   git push origin dev
+Use Stack Sync in CI to keep stack metadata up to date:
 
-   # Merge to main
-   git checkout main
-   git merge dev
-   git push origin main
-   ```
+```yaml
+name: stacksync
+on:
+  push:
+    branches: [ main ]
 
-### Version Management
+jobs:
+  stacksync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npx stacksync@latest --out tech.json
+```
 
-- **Auto-versioning**: GitHub Actions workflow (auto-version.yml) automatically bumps patch version on every push to `main`
-- **Workflow behavior**:
-  - Triggers on push to `main`
-  - Skips if package.json or package-lock.json changed (prevents loops)
-  - Runs `npm version patch` with `[skip ci]` message
-  - Creates git tag and pushes
+---
 
-### Testing
+## What Stack Sync does *not* do
 
-- All tests must pass before merging
-- Tests run automatically during git operations
-- Use Jest test suite
+* ❌ It does not execute or analyze runtime code
+* ❌ It does not attempt to infer architectural quality
+* ❌ It does not require network access to be useful
 
-### Key Practices
+This keeps it fast, safe, and CI-friendly.
 
-1. Always run tests before merging
-2. Use descriptive commit messages
-3. Keep feature branches focused and small
-4. Merge feature → dev → main in sequence
-5. Let auto-versioning handle version bumps (don't manually edit version)
-6. If merge conflicts with auto-version, pull main, resolve, and push
+---
+
+## Contributing
+
+Contributions are welcome — especially:
+
+* new detection rules
+* logo mappings and aliases
+* edge cases (monorepos, uncommon stacks)
+
+See `CONTRIBUTING.md` for development workflow and guidelines.
+
+---
+
+## License
+
+MIT
+
+```
+
+---
+
+### Final notes (important but quick)
+
+- This README is **npm-ready** and **user-focused**
+- Your internal branch/version automation should move to:
+  - `CONTRIBUTING.md` or `.github/`
+- The tone is correct for a free, public dev tool:  
+  *clear, confident, not over-marketed*
+
+You’re genuinely at the “ship it” point.  
+If you want, next I can:
+- tighten CLI flag descriptions to exactly match `commander`
+- write `CONTRIBUTING.md`
+- review your npm publish checklist line by line
+```
