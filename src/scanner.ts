@@ -3,6 +3,8 @@ import path from "path";
 import { techMap } from "./techMap";
 import { detectNext } from "./detectors/next";
 import { detectPrisma } from "./detectors/prisma";
+import { detectCI } from "./detectors/ci";
+import { detectDocker } from "./detectors/docker";
 import { DetectorResult, StackSyncConfig } from "./types";
 
 export async function scanRepo(
@@ -30,7 +32,7 @@ export async function scanRepo(
     }
 
     // File-based detectors
-    const detectors = [detectNext, detectPrisma];
+    const detectors = [detectNext, detectPrisma, detectCI, detectDocker];
 
     for (const detector of detectors) {
         const out = await detector(repoPath);

@@ -13,6 +13,38 @@ Automatically detect the tech stack of any project and generate a JSON or markdo
 
 ## Usage
 
+Run the CLI in your project root:
+
+```bash
+npx stacksync scan --out tech.md --format markdown --assets public/tech-stack
+```
+
+## Configuration
+
+You can configure StackSync by creating a `.stacksyncrc` or `stacksync.config.json` file in your project root.
+
+### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `colorMode` | `string` | Global color mode: `default` (brand), `white`, `black`, or `custom`. |
+| `customColor` | `string` | Hex code to use when `colorMode` is set to `custom`. |
+| `iconColors` | `object` | Map of tech names to specific hex codes. Overrides global mode. |
+| `ignore` | `string[]` | List of package names to ignore. |
+
+### Example `stacksync.config.json`
+
+```json
+{
+  "colorMode": "white",
+  "iconColors": {
+    "React": "#61DAFB",
+    "TypeScript": "#3178C6"
+  },
+  "ignore": ["lodash", "moment"]
+}
+```
+
 ## Development Workflow Summary
 
 ### Branch Strategy

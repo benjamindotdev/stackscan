@@ -6,7 +6,7 @@ export async function detectNext(repoPath: string) {
     const app = path.join(repoPath, "app");
 
     if (await fs.pathExists(pages) || await fs.pathExists(app)) {
-        return { name: "Next.js App", logo: "next.svg", type: "frontend" };
+        return { name: "Next.js App", logo: "frontend/nextdotjs.svg", type: "frontend" };
     }
 
     return null;

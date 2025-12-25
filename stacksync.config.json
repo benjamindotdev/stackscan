@@ -1,0 +1,9 @@
+{
+  "colorMode": "default",
+  "iconColors": {
+    "React": "#61DAFB",
+    "TypeScript": "#3178C6",
+    "Next.js": "#000000"
+  },
+  "ignore": []
+}
