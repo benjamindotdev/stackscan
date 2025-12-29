@@ -12,7 +12,8 @@
     "build": "tsup src --format cjs,esm --dts --shims",
     "dev": "tsup src --watch",
     "start": "node dist/cli.js",
-    "playground": "node scripts/playground.js"
+    "import": "ts-node src/import.ts",
+    "batch-import": "ts-node src/batch-import.ts"
   },
   "keywords": [
     "tech-stack",

@@ -1,0 +1,12 @@
+{
+  "name": "playground-app",
+  "version": "1.0.0",
+  "description": "A playground to test stacksync",
+  "scripts": {
+    "start": "node playground.js",
+    "test-batch": "node node_modules/stacksync/dist/cli.js batch-import"
+  },
+  "dependencies": {
+    "stacksync": "file:.."
+  }
+}

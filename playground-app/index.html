@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StackSync Playground</title>
+    <style>
+        :root {
+            --bg: #f4f4f5;
+            --text: #18181b;
+            --card-bg: #ffffff;
+            --border: #e4e4e7;
+            --input-bg: #ffffff;
+        }
+        [data-theme="dark"] {
+            --bg: #18181b;
+            --text: #f4f4f5;
+            --card-bg: #27272a;
+            --border: #3f3f46;
+            --input-bg: #27272a;
+        }
+        body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
+        h1 { margin-bottom: 1rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .container { display: grid; gap: 2rem; }
+        .input-section { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .controls { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap; }
+        select, input[type="color"] { padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); }
+        textarea { width: 100%; height: 200px; font-family: monospace; padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 1rem; background: var(--input-bg); color: var(--text); }
+        button { background: #2563eb; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        button:hover { background: #1d4ed8; }
+        button.secondary { background: var(--border); color: var(--text); }
+        button.secondary:hover { opacity: 0.9; }
+        .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .tech-item { background: var(--card-bg); padding: 1rem; border-radius: 8px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; border: 1px solid var(--border); }
+        .tech-item img { width: 48px; height: 48px; object-fit: contain; }
+        .tech-name { font-size: 0.875rem; font-weight: 500; }
+        .error { color: #dc2626; margin-top: 0.5rem; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>StackSync Playground</h1>
+                <p>Paste a package.json content below to see detected technologies.</p>
+            </div>
+            <button class="secondary" onclick="toggleTheme()">Toggle Theme</button>
+        </div>
+
+        <div class="input-section">
+            <div class="controls">
+                <label>
+                    Color Mode:
+                    <select id="colorMode" onchange="scan()">
+                        <option value="default">Default (Brand)</option>
+                        <option value="white">White</option>
+                        <option value="black">Black</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </label>
+                <label id="customColorContainer" style="display: none;">
+                    Custom Color:
+                    <input type="color" id="customColor" value="#FF5733" onchange="scan()">
+                </label>
+            </div>
+
+            <textarea id="input" placeholder='{
+  "dependencies": {
+    "react": "^18.0.0",
+    "typescript": "^5.0.0",
+    "next": "^13.0.0",
+    "tailwindcss": "^3.0.0"
+  }
+}'>{
+  "dependencies": {
+    "react": "^18.0.0",
+    "typescript": "^5.0.0",
+    "next": "^13.0.0",
+    "tailwindcss": "^3.0.0"
+  }
+}</textarea>
+            <button onclick="scan()">Scan Dependencies</button>
+            <div id="error" class="error"></div>
+        </div>
+
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const current = body.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', next);
+        }
+
+        document.getElementById('colorMode').addEventListener('change', (e) => {
+            const customContainer = document.getElementById('customColorContainer');
+            customContainer.style.display = e.target.value === 'custom' ? 'inline-flex' : 'none';
+        });
+
+        async function scan() {
+            const input = document.getElementById('input').value;
+            const errorEl = document.getElementById('error');
+            const resultsEl = document.getElementById('results');
+            const colorMode = document.getElementById('colorMode').value;
+            const customColor = document.getElementById('customColor').value;
+            
+            errorEl.style.display = 'none';
+            resultsEl.innerHTML = '';
+
+            try {
+                // Validate JSON first
+                JSON.parse(input);
+
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: input
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                if (data.length === 0) {
+                    resultsEl.innerHTML = '<p style="grid-column: 1/-1; text-align: center; opacity: 0.7;">No matching technologies found.</p>';
+                    return;
+                }
+
+                data.forEach(tech => {
+                    const div = document.createElement('div');
+                    div.className = 'tech-item';
+                    
+                    // Construct URL with color params
+                    const url = new URL(tech.logoUrl, window.location.origin);
+                    url.searchParams.set('colorMode', colorMode);
+                    if (colorMode === 'custom') {
+                        url.searchParams.set('customColor', customColor);
+                    }
+
+                    div.innerHTML = `
+                        <img src="${url.toString()}" alt="${tech.name}" onerror="this.style.display='none'">
+                        <span class="tech-name">${tech.name}</span>
+                    `;
+                    resultsEl.appendChild(div);
+                });
+
+            } catch (e) {
+                errorEl.textContent = e.message;
+                errorEl.style.display = 'block';
+            }
+        }
+
+        // Initial scan
+        scan();
+    </script>
+</body>
+</html>
