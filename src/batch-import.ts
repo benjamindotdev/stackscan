@@ -69,13 +69,18 @@ async function batchImport(options: BatchImportOptions = {}) {
             else if (options.color && options.color.startsWith('#')) color = options.color;
             else {
                // Default to brand color
-               // techMap keys are aliases, but simpleIconsHex uses slugs.
-               // We need to find the slug. techMap doesn't store the slug directly, 
-               // but we can try to look it up or assume the alias is close.
-               // Actually, techDefinitions has the id.
-               // Let's try to look up the hex using the dependency name (dep) which is often the slug
-               // or fallback to the tech name.
-               const hex = (simpleIconsHex as any)[dep] || (simpleIconsHex as any)[tech.name.toLowerCase()];
+               // Try to find hex by:
+               // 1. Exact dependency name (e.g. "react")
+               // 2. Tech name lowercased (e.g. "React" -> "react")
+               // 3. Tech name with spaces removed (e.g. "Tailwind CSS" -> "tailwindcss")
+               const depSlug = dep.toLowerCase();
+               const nameSlug = tech.name.toLowerCase();
+               const nameSlugNoSpaces = tech.name.toLowerCase().replace(/\s+/g, '');
+               
+               const hex = (simpleIconsHex as any)[depSlug] || 
+                           (simpleIconsHex as any)[nameSlug] || 
+                           (simpleIconsHex as any)[nameSlugNoSpaces];
+                           
                if (hex) color = `#${hex}`;
             }
 
