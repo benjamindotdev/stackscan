@@ -138,8 +138,16 @@ const server = http.createServer(async (req, res) => {
                 color = customColor;
             } else if (colorMode === 'default') {
                 if (!isDefault) {
-                    const slug = path.basename(relativePath, '.svg');
-                    const brandHex = simpleIconsHex[slug];
+                    const slug = path.basename(relativePath, '.svg').toLowerCase();
+                    // Try exact match, or try to find key that matches slug
+                    let brandHex = simpleIconsHex[slug];
+                    
+                    // Fallback: try to find key in simpleIconsHex that matches the slug
+                    if (!brandHex) {
+                        // simpleIconsHex keys are usually lowercased slugs, but let's be safe
+                        brandHex = simpleIconsHex[slug];
+                    }
+
                     if (brandHex) {
                         color = `#${brandHex}`;
                     }
