@@ -128,11 +128,13 @@
                         projectDiv.appendChild(title);
 
                         const stackContainer = document.createElement('div');
-                        stackContainer.style.display = 'flex';
-                        stackContainer.style.gap = '0.5rem';
-                        stackContainer.style.flexWrap = 'wrap';
+                        stackContainer.className = 'results';
+                        stackContainer.style.marginTop = '1rem';
 
                         project.stack.forEach(tech => {
+                            const techItem = document.createElement('div');
+                            techItem.className = 'tech-item';
+
                             const img = document.createElement('img');
                             // Extract relative path to use local coloring
                             const relativePath = tech.logo.split('assets/logos/')[1];
@@ -144,9 +146,15 @@
                                 img.src = tech.logo;
                             }
                             
-                            img.height = 40;
-                            img.title = tech.name;
-                            stackContainer.appendChild(img);
+                            img.alt = tech.name;
+                            
+                            const nameSpan = document.createElement('span');
+                            nameSpan.className = 'tech-name';
+                            nameSpan.textContent = tech.name;
+
+                            techItem.appendChild(img);
+                            techItem.appendChild(nameSpan);
+                            stackContainer.appendChild(techItem);
                         });
 
                         projectDiv.appendChild(stackContainer);
