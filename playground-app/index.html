@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StackSync Playground</title>
+    <title>StackScan Playground</title>
     <style>
         :root {
             --bg: #f4f4f5;
@@ -42,53 +42,53 @@
     <div class="container">
         <div class="header">
             <div>
-                <h1>StackSync Playground</h1>
+                <h1>StackScan Playground</h1>
                 <p>Sync your projects to generate stack.json and README assets.</p>
             </div>
             <button class="secondary" onclick="toggleTheme()">Toggle Theme</button>
         </div>
 
         <div class="input-section">
-            <h2>Sync</h2>
+            <h2>Scan</h2>
             <p style="margin-bottom: 1rem; color: var(--text); opacity: 0.8;">
-                Place your project folders in <code>playground-app/stacksync/</code> and click below.
+                Place your project folders in <code>playground-app/stackscan/</code> and click below.
             </p>
             
             <div class="controls">
                 <label>
                     Color Mode:
-                    <select id="syncColorMode">
+                    <select id="scanColorMode">
                         <option value="brand">Brand (Default)</option>
                         <option value="white">White</option>
                         <option value="black">Black</option>
                         <option value="custom">Custom</option>
                     </select>
                 </label>
-                <label id="syncCustomColorContainer" style="display: none;">
+                <label id="scanCustomColorContainer" style="display: none;">
                     Custom Color:
-                    <input type="color" id="syncCustomColor" value="#FF5733">
+                    <input type="color" id="scanCustomColor" value="#FF5733">
                 </label>
             </div>
 
-            <button onclick="runSync()">Run Sync</button>
-            <div id="sync-results" style="margin-top: 1rem;"></div>
+            <button onclick="runScan()">Run Scan</button>
+            <div id="scan-results" style="margin-top: 1rem;"></div>
         </div>
     </div>
 
     <script>
-        document.getElementById('syncColorMode').addEventListener('change', (e) => {
-            const customContainer = document.getElementById('syncCustomColorContainer');
+        document.getElementById('scanColorMode').addEventListener('change', (e) => {
+            const customContainer = document.getElementById('scanCustomColorContainer');
             customContainer.style.display = e.target.value === 'custom' ? 'inline-flex' : 'none';
         });
 
-        async function runSync() {
-            const btn = document.querySelector('button[onclick="runSync()"]');
-            const resultsDiv = document.getElementById('sync-results');
-            const colorMode = document.getElementById('syncColorMode').value;
+        async function runScan() {
+            const btn = document.querySelector('button[onclick="runScan()"]');
+            const resultsDiv = document.getElementById('scan-results');
+            const colorMode = document.getElementById('scanColorMode').value;
             let color = colorMode;
             
             if (colorMode === 'custom') {
-                color = document.getElementById('syncCustomColor').value;
+                color = document.getElementById('scanCustomColor').value;
             }
             
             btn.disabled = true;
@@ -96,7 +96,7 @@
             resultsDiv.innerHTML = '';
 
             try {
-                const res = await fetch('/api/sync', { 
+                const res = await fetch('/api/scan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ color })
@@ -178,7 +178,7 @@
                 resultsDiv.innerHTML = `<div class="error">${err.message}</div>`;
             } finally {
                 btn.disabled = false;
-                btn.textContent = 'Run Sync';
+                btn.textContent = 'Run Scan';
             }
         }
 

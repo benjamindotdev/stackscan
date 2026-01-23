@@ -1,19 +1,19 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const { techMap } = require('stacksync/dist/techMap');
+const { techMap } = require('stackscan/dist/techMap');
 const simpleIconsHex = require('../src/simple-icons-hex.json');
-const { sync } = require('stacksync/dist/sync');
+const { scan } = require('stackscan/dist/scan');
 
 const PORT = 3000;
-// Resolve assets from the installed stacksync package
-const STACKSYNC_ROOT = path.dirname(require.resolve('stacksync/package.json'));
-const ASSETS_DIR = path.join(STACKSYNC_ROOT, 'public/assets/logos');
+// Resolve assets from the installed stackscan package
+const STACKSCAN_ROOT = path.dirname(require.resolve('stackscan/package.json'));
+const ASSETS_DIR = path.join(STACKSCAN_ROOT, 'public/assets/logos');
 const LUCIDE_DIR = path.join(path.dirname(require.resolve('lucide-static/package.json')), 'icons');
-const { DEFAULT_CATEGORY_ICONS } = require('stacksync/dist/defaults');
+const { DEFAULT_CATEGORY_ICONS } = require('stackscan/dist/defaults');
 
-function getSyncResults() {
-    const baseDir = path.join(process.cwd(), 'stacksync');
+function getScanResults() {
+    const baseDir = path.join(process.cwd(), 'stackscan');
     if (!fs.existsSync(baseDir)) return [];
     
     return fs.readdirSync(baseDir, { withFileTypes: true })
@@ -56,8 +56,8 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // API: Run Sync
-    if (req.method === 'POST' && req.url === '/api/sync') {
+    // API: Run Scan
+    if (req.method === 'POST' && req.url === '/api/scan') {
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
@@ -65,8 +65,8 @@ const server = http.createServer(async (req, res) => {
         req.on('end', async () => {
             try {
                 const { color } = JSON.parse(body || '{}');
-                await sync({ color });
-                const results = getSyncResults();
+                await scan({ color });
+                const results = getScanResults();
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify(results));
             } catch (e) {
@@ -78,10 +78,10 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // API: Get Sync Results
-    if (req.method === 'GET' && req.url === '/api/sync-results') {
+    // API: Get Scan Results
+    if (req.method === 'GET' && req.url === '/api/scan-results') {
         try {
-            const results = getSyncResults();
+            const results = getScanResults();
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(results));
         } catch (e) {

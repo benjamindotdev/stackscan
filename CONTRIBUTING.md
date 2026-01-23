@@ -1,6 +1,6 @@
-# Contributing to Stack Sync
+# Contributing to StackScan
 
-Thanks for your interest in contributing to **Stack Sync**!  
+Thanks for your interest in contributing to **StackScan**!  
 Contributions of all kinds are welcome — bug fixes, new detection rules, logo mappings, and documentation improvements.
 
 This project aims to stay **simple, deterministic, and automation-friendly**, so small, focused changes are preferred.
@@ -75,14 +75,14 @@ Avoid embedded styles or unnecessary metadata
 
 Monochrome or neutral variants are preferred when possible
 
-If no suitable logo exists, do not force one — Stack Sync will fall back to a category icon.
+If no suitable logo exists, do not force one — StackScan will fall back to a category icon.
 
 Development setup
 1. Clone the repository
 bash
 Copy code
-git clone https://github.com/benjamindotdev/stacksync.git
-cd stacksync
+git clone https://github.com/benjamindotdev/stackscan.git
+cd stackscan
 2. Install dependencies
 bash
 Copy code
@@ -137,4 +137,4 @@ detection heuristics
 
 Open an issue — discussion is encouraged.
 
-Thank you for helping improve Stack Sync 🚀
+Thank you for helping improve StackScan 🚀

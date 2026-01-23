@@ -3,4 +3,5 @@ dist/
 .env
 *.tgz
 playground-app/
-stacksync/
+stackscan/
+.npmrc

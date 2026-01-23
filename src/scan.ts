@@ -27,8 +27,8 @@ interface SyncOptions {
   copyAssets?: boolean;
 }
 
-async function sync(options: SyncOptions = {}) {
-  console.log('🚀 Starting Sync...');
+async function scan(options: SyncOptions = {}) {
+  console.log('🚀 Starting Scan...');
   if (options.color) {
     console.log(`🎨 Color mode: ${options.color}`);
   }
@@ -206,4 +206,4 @@ function updateRootReadme(projects: { name: string; techs: any[] }[]) {
 }
 
 
-export { sync };
+export { scan };

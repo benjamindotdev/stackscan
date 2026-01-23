@@ -1,11 +1,11 @@
-# <img src="public/stacksync.svg#gh-light-mode-only" alt="StackSync" width="30" /> <img src="public/stacksync-white.svg#gh-dark-mode-only" alt="StackSync" width="30" /> StackSync
+# <img src="public/stackscan.svg#gh-light-mode-only" alt="StackScan" width="30" /> <img src="public/stackscan-white.svg#gh-dark-mode-only" alt="StackScan" width="30" /> StackScan
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 Automatically detect the tech stack of any project and generate structured output (JSON, Markdown, or badges).  
 Designed for portfolios, READMEs, dashboards, and CI automation.
 
-**StackSync** scans a repository (dependencies + file structure), normalizes detected technologies into categories, and maps them to logos with sensible fallbacks.
+**StackScan** scans a repository (dependencies + file structure), normalizes detected technologies into categories, and maps them to logos with sensible fallbacks.
 
 ---
 
@@ -23,14 +23,14 @@ Designed for portfolios, READMEs, dashboards, and CI automation.
 
 ### One-off (recommended)
 ```bash
-npx stacksync@latest
+npx stackscan@latest
 ````
 
 ### Global
 
 ```bash
-npm install -g stacksync
-stacksync
+npm install -g stackscan
+stackscan
 ```
 
 ---
@@ -38,14 +38,14 @@ stacksync
 ## Usage
 
 1.  **Prepare Input**: 
-    *   Place your project folders inside `stacksync/`.
-    *   **OR** simply drop your `package.json` files directly into `stacksync/`. 
+    *   Place your project folders inside `stackscan/`.
+    *   **OR** simply drop your `package.json` files directly into `stackscan/`. 
         *   If you have multiple, you can name them `package (1).json`, `package (2).json`, etc.
-        *   StackSync will automatically create folders based on the project name defined in each file.
-2.  **Run Sync**:
+        *   StackScan will automatically create folders based on the project name defined in each file.
+2.  **Run Scan**:
 
 ```bash
-npx stacksync sync
+npx stackscan scan
 ```
 
 ### Add Command
@@ -54,16 +54,16 @@ You can also add a project from anywhere on your disk using the CLI. You can poi
 
 ```bash
 # Point to a file
-npx stacksync add ./path/to/package.json
+npx stackscan add ./path/to/package.json
 
 # Point to a folder (automatically finds package.json)
-npx stacksync add ../my-project
+npx stackscan add ../my-project
 ```
 
-This will copy the `package.json` into a new folder inside `stacksync/` (e.g., `stacksync/my-project/`), handling name collisions automatically.
+This will copy the `package.json` into a new folder inside `stackscan/` (e.g., `stackscan/my-project/`), handling name collisions automatically.
 
 This will:
-*   Scan all projects in `stacksync/`.
+*   Scan all projects in `stackscan/`.
 *   Generate `stack.json` and `stack.md` inside each project folder.
 *   Copy logo assets to `public/assets/logos/`.
 *   Update your root `README.md` with a "My Projects" section.
@@ -72,20 +72,20 @@ This will:
 
 ```bash
 # Use white logos
-npx stacksync sync --color white
+npx stackscan scan --color white
 
 # Use black logos
-npx stacksync sync --color black
+npx stackscan scan --color black
 
 # Use brand colors (default)
-npx stacksync sync --color brand
+npx stackscan scan --color brand
 ```
 
 ---
 
 ## Output
 
-For each project in `stacksync/`, a `stack.json` is generated in the same folder.
+For each project in `stackscan/`, a `stack.json` is generated in the same folder.
 
 Example `stack.json`:
 
@@ -94,14 +94,14 @@ Example `stack.json`:
   {
     "name": "TypeScript",
     "slug": "typescript",
-    "logo": "https://raw.githubusercontent.com/benjamindotdev/stacksync/main/public/assets/logos/language/typescript.svg",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/language/typescript.svg",
     "relativePath": "public/assets/logos/language/typescript.svg",
     "color": "#3178C6"
   },
   {
     "name": "Next.js",
     "slug": "next",
-    "logo": "https://raw.githubusercontent.com/benjamindotdev/stacksync/main/public/assets/logos/frameworks/nextjs.svg",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/frameworks/nextjs.svg",
     "relativePath": "public/assets/logos/frameworks/nextjs.svg",
     "color": "#000000"
   }
@@ -115,7 +115,7 @@ Anything without a known logo still renders cleanly using category defaults (e.g
 
 ## Logo resolution
 
-StackSync resolves logos in the following order:
+StackScan resolves logos in the following order:
 
 1. Built-in curated registry
 2. Known aliases (e.g. `next-auth` → **Auth.js**)
@@ -128,23 +128,23 @@ This guarantees usable output even when a logo is missing.
 
 ## GitHub Actions (optional)
 
-Use StackSync in CI to keep stack metadata up to date:
+Use StackScan in CI to keep stack metadata up to date:
 
 ```yaml
-name: stacksync
+name: stackscan
 on:
   push:
     branches: [ main ]
 
 jobs:
-  stacksync:
+  stackscan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npx stacksync sync
+      - run: npx stackscan scan
 ```
 
 ---
