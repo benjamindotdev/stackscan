@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StackSync Playground</title>
+    <style>
+        :root {
+            --bg: #f4f4f5;
+            --text: #18181b;
+            --card-bg: #ffffff;
+            --border: #e4e4e7;
+            --input-bg: #ffffff;
+        }
+        [data-theme="dark"] {
+            --bg: #18181b;
+            --text: #f4f4f5;
+            --card-bg: #27272a;
+            --border: #3f3f46;
+            --input-bg: #27272a;
+        }
+        body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
+        h1 { margin-bottom: 1rem; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .container { display: grid; gap: 2rem; }
+        .input-section { background: var(--card-bg); padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .controls { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap; }
+        select, input[type="color"] { padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); }
+        textarea { width: 100%; height: 200px; font-family: monospace; padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 1rem; background: var(--input-bg); color: var(--text); }
+        button { background: #2563eb; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        button:hover { background: #1d4ed8; }
+        button.secondary { background: var(--border); color: var(--text); }
+        button.secondary:hover { opacity: 0.9; }
+        .results { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .tech-item { background: var(--card-bg); padding: 1rem; border-radius: 8px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; border: 1px solid var(--border); }
+        .tech-item img { width: 48px; height: 48px; object-fit: contain; }
+        .tech-name { font-size: 0.875rem; font-weight: 500; }
+        .error { color: #dc2626; margin-top: 0.5rem; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>StackSync Playground</h1>
+                <p>Sync your projects to generate stack.json and README assets.</p>
+            </div>
+            <button class="secondary" onclick="toggleTheme()">Toggle Theme</button>
+        </div>
+
+        <div class="input-section">
+            <h2>Sync</h2>
+            <p style="margin-bottom: 1rem; color: var(--text); opacity: 0.8;">
+                Place your project folders in <code>playground-app/stacksync/</code> and click below.
+            </p>
+            
+            <div class="controls">
+                <label>
+                    Color Mode:
+                    <select id="syncColorMode">
+                        <option value="brand">Brand (Default)</option>
+                        <option value="white">White</option>
+                        <option value="black">Black</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </label>
+                <label id="syncCustomColorContainer" style="display: none;">
+                    Custom Color:
+                    <input type="color" id="syncCustomColor" value="#FF5733">
+                </label>
+            </div>
+
+            <button onclick="runSync()">Run Sync</button>
+            <div id="sync-results" style="margin-top: 1rem;"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('syncColorMode').addEventListener('change', (e) => {
+            const customContainer = document.getElementById('syncCustomColorContainer');
+            customContainer.style.display = e.target.value === 'custom' ? 'inline-flex' : 'none';
+        });
+
+        async function runSync() {
+            const btn = document.querySelector('button[onclick="runSync()"]');
+            const resultsDiv = document.getElementById('sync-results');
+            const colorMode = document.getElementById('syncColorMode').value;
+            let color = colorMode;
+            
+            if (colorMode === 'custom') {
+                color = document.getElementById('syncCustomColor').value;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Running...';
+            resultsDiv.innerHTML = '';
+
+            try {
+                const res = await fetch('/api/sync', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ color })
+                });
+                const data = await res.json();
+                
+                if (data.error) throw new Error(data.error);
+
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = '<p>No projects found or processed.</p>';
+                } else {
+                    data.forEach(project => {
+                        const projectDiv = document.createElement('div');
+                        projectDiv.style.background = 'var(--card-bg)';
+                        projectDiv.style.border = '1px solid var(--border)';
+                        projectDiv.style.borderRadius = '8px';
+                        projectDiv.style.padding = '1rem';
+                        projectDiv.style.marginBottom = '1rem';
+                        
+                        const title = document.createElement('h3');
+                        title.textContent = project.name;
+                        title.style.marginTop = '0';
+                        projectDiv.appendChild(title);
+
+                        const stackContainer = document.createElement('div');
+                        stackContainer.className = 'results';
+                        stackContainer.style.marginTop = '1rem';
+
+                        project.stack.forEach(tech => {
+                            const techItem = document.createElement('div');
+                            techItem.className = 'tech-item';
+
+                            const img = document.createElement('img');
+                            
+                            // Use the color from the stack.json if available (which comes from sync logic)
+                            // We use the proxy to visualize the result of the sync selection.
+                            
+                            const relativePath = tech.logo.split('public/assets/logos/')[1];
+                            if (relativePath) {
+                                // We use the color that was selected for the sync
+                                // We can pass it as a query param to the local asset proxy
+                                let proxyColorMode = colorMode;
+                                let proxyCustomColor = '';
+                                
+                                if (colorMode === 'custom') {
+                                    proxyCustomColor = encodeURIComponent(color);
+                                } else if (colorMode === 'brand') {
+                                    proxyColorMode = 'default';
+                                }
+                                
+                                img.src = `/assets/${relativePath}?colorMode=${proxyColorMode}&customColor=${proxyCustomColor}`;
+                            } else {
+                                img.src = tech.logo;
+                            }
+                            
+                            img.alt = tech.name;
+                            
+                            const nameSpan = document.createElement('span');
+                            nameSpan.className = 'tech-name';
+                            nameSpan.textContent = tech.name;
+                            
+                            // Optional: Show the hex code if debugging
+                            // const colorSpan = document.createElement('span');
+                            // colorSpan.style.fontSize = '10px';
+                            // colorSpan.textContent = tech.color;
+                            // techItem.appendChild(colorSpan);
+
+                            techItem.appendChild(img);
+                            techItem.appendChild(nameSpan);
+                            stackContainer.appendChild(techItem);
+                        });
+
+                        projectDiv.appendChild(stackContainer);
+                        resultsDiv.appendChild(projectDiv);
+                    });
+                }
+
+            } catch (err) {
+                resultsDiv.innerHTML = `<div class="error">${err.message}</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Run Sync';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const current = body.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', next);
+        }
+    </script>
+</body>
+</html>

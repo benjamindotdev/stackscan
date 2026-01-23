@@ -1221,7 +1221,7 @@ export const techDefinitions: TechDefinition[] = [
       "NextAuth.js"
     ],
     "category": "auth",
-    "logo": "frontend/nextdotjs.svg",
+    "logo": "auth/authjs.svg",
     "frameworks": []
   },
   {
@@ -1571,7 +1571,7 @@ export const techDefinitions: TechDefinition[] = [
       "husky"
     ],
     "category": "lint",
-    "logo": "lint/husqvarna.svg",
+    "logo": "lint/husky.svg",
     "frameworks": []
   },
   {
