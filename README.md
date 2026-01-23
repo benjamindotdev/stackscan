@@ -5,7 +5,7 @@
 Automatically detect the tech stack of any project and generate structured output (JSON, Markdown, or badges).  
 Designed for portfolios, READMEs, dashboards, and CI automation.
 
-**Stack Sync** scans a repository (dependencies + file structure), normalizes detected technologies into categories, and maps them to logos with sensible fallbacks.
+**StackSync** scans a repository (dependencies + file structure), normalizes detected technologies into categories, and maps them to logos with sensible fallbacks.
 
 ---
 
@@ -73,7 +73,7 @@ npx stacksync --ignore lodash,moment
 
 ## Output
 
-Stack Sync produces normalized metadata grouped by category and enriched with logo information.
+StackSync produces normalized metadata grouped by category and enriched with logo information.
 
 Example JSON output:
 
@@ -100,7 +100,7 @@ Anything without a known logo still renders cleanly using category defaults (e.g
 
 ## Configuration
 
-Stack Sync uses **cosmiconfig**. Create one of:
+StackSync uses **cosmiconfig**. Create one of:
 
 * `.stacksyncrc`
 * `.stacksyncrc.json`
@@ -132,7 +132,7 @@ Stack Sync uses **cosmiconfig**. Create one of:
 
 ## Logo resolution
 
-Stack Sync resolves logos in the following order:
+StackSync resolves logos in the following order:
 
 1. Built-in curated registry
 2. Known aliases (e.g. `next-auth` → **Auth.js**)
@@ -145,7 +145,7 @@ This guarantees usable output even when a logo is missing.
 
 ## GitHub Actions (optional)
 
-Use Stack Sync in CI to keep stack metadata up to date:
+Use StackSync in CI to keep stack metadata up to date:
 
 ```yaml
 name: stacksync
@@ -166,7 +166,7 @@ jobs:
 
 ---
 
-## What Stack Sync does *not* do
+## What StackSync does *not* do
 
 * ❌ It does not execute or analyze runtime code
 * ❌ It does not attempt to infer architectural quality
