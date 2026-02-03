@@ -2,8 +2,8 @@
   "name": "stackscan",
   "version": "0.1.7",
   "description": "Automatically detect tech stacks from repositories and generate logos, JSON, and markdown for portfolios.",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "bin": {
     "stackscan": "./dist/cli.js"
