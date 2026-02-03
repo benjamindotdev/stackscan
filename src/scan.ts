@@ -4,7 +4,7 @@ import { techMap } from './techMap';
 import simpleIconsHex from './simple-icons-hex.json';
 import { generateMarkdown, copyAssets } from './output';
 
-const BASE_DIR = path.join(process.cwd(), 'stackscan');
+const BASE_DIR = path.join(process.cwd(), 'public', 'stackscan');
 
 const SKIPPED_TECHS = [
   'react-dom',
@@ -36,7 +36,7 @@ async function scan(options: SyncOptions = {}) {
   if (!fs.existsSync(BASE_DIR)) {
     console.log(`Creating stackscan directory at: ${BASE_DIR}`);
     fs.mkdirSync(BASE_DIR, { recursive: true });
-    console.log('Please place your project folders inside "stackscan/" and run this command again.');
+    console.log('Please place your project folders inside "public/stackscan/" and run this command again.');
     process.exit(0);
   }
 
@@ -44,7 +44,7 @@ async function scan(options: SyncOptions = {}) {
   const projectDirs = entries.filter(dirent => dirent.isDirectory() && dirent.name !== 'input' && dirent.name !== 'output');
 
   if (projectDirs.length === 0) {
-    console.log('⚠️  No project directories found in "stackscan/".');
+    console.log('⚠️  No project directories found in "public/stackscan/".');
     return;
   }
 
