@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
 
-const BASE_DIR = path.join(process.cwd(), 'stackscan');
+const BASE_DIR = path.join(process.cwd(), 'public', 'stackscan');
 
 export async function add(sourcePath: string) {
     let absoluteSourcePath = path.resolve(sourcePath);
@@ -50,7 +50,7 @@ export async function add(sourcePath: string) {
         }
 
         fs.copyFileSync(absoluteSourcePath, targetFile);
-        console.log(chalk.green(`✅ Added project "${pkg.name}" to stackscan/${folderName}`));
+        console.log(chalk.green(`✅ Added project "${pkg.name}" to public/stackscan/${folderName}`));
 
     } catch (error) {
         console.error(chalk.red(`❌ Error processing ${sourcePath}:`), error);

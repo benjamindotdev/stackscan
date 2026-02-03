@@ -14,7 +14,7 @@ program
 
 program
     .command("scan", { isDefault: true })
-    .description("Scan stacks from multiple projects in stackscan/")
+    .description("Scan stacks from multiple projects in public/stackscan/")
     .option("--color <mode>", "Color mode (brand, white, black, or hex)", "brand")
     .action(async (options) => {
         await scan(options);
@@ -22,7 +22,7 @@ program
 
 program
     .command("add <path>")
-    .description("Add a project (folder or package.json) to the stackscan workspace")
+    .description("Add a project (folder or package.json) to the public/stackscan workspace")
     .action(async (path) => {
         await add(path);
     });
