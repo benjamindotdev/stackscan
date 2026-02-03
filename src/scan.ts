@@ -98,7 +98,7 @@ async function scan(options: SyncOptions = {}) {
               name: tech.name,
               slug: dep,
               logo: tech.logo, // Raw path for resolution
-              type: tech.category,
+              type: tech.type,
               color: color
             });
           }
