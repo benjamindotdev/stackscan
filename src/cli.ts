@@ -16,6 +16,7 @@ program
     .command("scan", { isDefault: true })
     .description("Scan stacks from multiple projects in public/stackscan/")
     .option("--color <mode>", "Color mode (brand, white, black, or hex)", "brand")
+    .option("--no-readme", "Do not update the root README.md")
     .action(async (options) => {
         await scan(options);
     });

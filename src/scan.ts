@@ -25,9 +25,13 @@ function toCamelCase(str: string): string {
 interface SyncOptions {
   color?: string;
   copyAssets?: boolean;
+  readme?: boolean; // commander uses --no-readme to set readme to false
 }
 
 async function scan(options: SyncOptions = {}) {
+  // Default readme to true if undefined
+  if (options.readme === undefined) options.readme = true;
+
   console.log('🚀 Starting Scan...');
   if (options.color) {
     console.log(`🎨 Color mode: ${options.color}`);
@@ -162,9 +166,11 @@ async function scan(options: SyncOptions = {}) {
     }
   }
 
-  // Update Root README
-  if (allProjects.length > 0) {
+  // Update Root README if enabled
+  if (options.readme && allProjects.length > 0) {
       updateRootReadme(allProjects);
+  } else if (!options.readme) {
+      console.log('Skipping README update (--no-readme passed).');
   }
 
   console.log('\n✨ Sync complete.');
