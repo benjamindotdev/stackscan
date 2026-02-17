@@ -845,7 +845,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "notion",
     "name": "Notion",
     "aliases": [
-      "notion"
+      "notion",
+      "@notionhq/client"
     ],
     "category": "utility",
     "logo": "utility/notion.svg",
@@ -855,7 +856,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "slack",
     "name": "Slack",
     "aliases": [
-      "slack"
+      "slack",
+      "@slack/web-api"
     ],
     "category": "utility",
     "logo": "utility/slack.svg",
@@ -875,7 +877,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "githubcopilot",
     "name": "GitHub Copilot",
     "aliases": [
-      "github-copilot"
+      "github-copilot",
+      "github-copilot-extension"
     ],
     "category": "ai",
     "logo": "ai/githubcopilot.svg",
@@ -1621,7 +1624,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "netlify",
     "name": "Netlify",
     "aliases": [
-      "netlify"
+      "netlify",
+      "netlify-cli"
     ],
     "category": "hosting",
     "logo": "hosting/netlify.svg",
