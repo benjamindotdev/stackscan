@@ -1,6 +1,6 @@
 {
   "name": "stackscan",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "Automatically detect tech stacks from repositories and generate logos, JSON, and markdown for portfolios.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
