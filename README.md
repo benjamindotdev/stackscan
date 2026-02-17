@@ -171,6 +171,15 @@ See `CONTRIBUTING.md` for development workflow and guidelines.
 
 ---
 
+## Credits
+
+Special thanks to these amazing icon libraries that make StackScan possible:
+
+*   **[Simple Icons](https://simpleicons.org/)** – The primary source for brand logos and hex colors.
+*   **[Lucide](https://lucide.dev/)** – Provides the beautiful category fallback icons.
+
+---
+
 ## License
 
 MIT
