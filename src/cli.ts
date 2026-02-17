@@ -13,12 +13,21 @@ program
     .version("0.1.0");
 
 program
-    .command("scan", { isDefault: true })
-    .description("Scan stacks from multiple projects in public/stackscan/")
+    .command("scan [path]", { isDefault: true })
+    .description("Scan stacks from multiple projects in public/stackscan/ or a specific project path")
     .option("--color <mode>", "Color mode (brand, white, black, or hex)", "brand")
     .option("--no-readme", "Do not update the root README.md")
-    .action(async (options) => {
-        await scan(options);
+    .option("--out <file>", "Output JSON file (only for single project scan)")
+    .action(async (path, options) => {
+        // If path is a string, it's the path argument.
+        // If path is an object, it's the options object (when no path arg provided), 
+        // and the second arg is undefined or the command object.
+        // Commander passes arguments then options/command.
+        
+        let targetPath = typeof path === 'string' ? path : undefined;
+        let opts = typeof path === 'object' ? path : options;
+        
+        await scan(targetPath, opts);
     });
 
 program

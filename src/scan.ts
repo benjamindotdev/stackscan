@@ -63,9 +63,108 @@ interface SyncOptions {
   color?: string;
   copyAssets?: boolean;
   readme?: boolean; // commander uses --no-readme to set readme to false
+  out?: string;
 }
 
-async function scan(options: SyncOptions = {}) {
+async function analyzeProject(projectPath: string, options: SyncOptions): Promise<any[]> {
+    const packageJsonPath = path.join(projectPath, 'package.json');
+    if (!fs.existsSync(packageJsonPath)) {
+        throw new Error(`No package.json found at ${packageJsonPath}`);
+    }
+
+    const content = fs.readFileSync(packageJsonPath, 'utf-8');
+    const pkg = JSON.parse(content);
+    
+    // 1. Detect Tech
+    const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
+    const detectedTechs: any[] = [];
+
+    Object.keys(allDeps).forEach(dep => {
+      if (SKIPPED_TECHS.includes(dep)) return;
+
+      if (techMap[dep]) {
+        const tech = techMap[dep];
+        
+        // Determine Color
+        let color = null;
+        if (options.color === 'white') color = '#FFFFFF';
+        else if (options.color === 'black') color = '#000000';
+        else if (options.color && options.color.startsWith('#')) color = options.color;
+        else {
+           // Default to brand color
+           const depSlug = dep.toLowerCase();
+           const nameSlug = tech.name.toLowerCase();
+           const nameSlugNoSpaces = tech.name.toLowerCase().replace(/\s+/g, '');
+           
+           const hex = (simpleIconsHex as any)[depSlug] || 
+                       (simpleIconsHex as any)[nameSlug] || 
+                       (simpleIconsHex as any)[nameSlugNoSpaces];
+                       
+           if (hex) color = `#${hex}`;
+        }
+
+        detectedTechs.push({
+          name: tech.name,
+          slug: dep,
+          logo: tech.logo,
+          type: tech.type,
+          color: color
+        });
+      }
+    });
+
+    // 2. Deduplicate by slug
+    // Ensure we keep the object found
+    const uniqueSlugs = Array.from(new Set(detectedTechs.map(t => t.slug)));
+    let uniqueTechs = uniqueSlugs.map(slug => detectedTechs.find(t => t.slug === slug)!);
+
+    // 3. Deduplicate by logo
+    const seenLogos = new Set<string>();
+    uniqueTechs = uniqueTechs.filter(t => {
+        if (seenLogos.has(t.logo)) {
+            return false;
+        }
+        seenLogos.add(t.logo);
+        return true;
+    });
+
+    // 4. Sort by Category Priority
+    uniqueTechs.sort((a, b) => {
+        const pA = getCategoryPriority(a.type);
+        const pB = getCategoryPriority(b.type);
+        if (pA !== pB) return pA - pB;
+        return a.name.localeCompare(b.name);
+    });
+    
+    // Resolve Assets (Copy & Fallback)
+    const assetsDir = path.join(process.cwd(), 'public', 'assets', 'logos');
+    if (options.copyAssets !== false) {
+         await copyAssets(uniqueTechs, assetsDir, { colorMode: options.color as any });
+    }
+
+    // Create URL-based version for Output
+    return uniqueTechs.map(t => ({
+        ...t,
+        logo: `https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/${t.logo}`,
+        relativePath: `./public/assets/logos/${t.logo}`
+    }));
+}
+
+async function scan(targetPath?: string | object, optionsOrUndefined?: SyncOptions) {
+  // Handle arguments
+  // scan(options) -> targetPath is options, optionsOrUndefined is undefined
+  // scan(path, options) -> targetPath is string, optionsOrUndefined is options
+  
+  let options: SyncOptions = {};
+  let pathArg: string | undefined = undefined;
+
+  if (typeof targetPath === 'string') {
+      pathArg = targetPath;
+      options = optionsOrUndefined || {};
+  } else if (typeof targetPath === 'object') {
+      options = targetPath as SyncOptions;
+  }
+
   // Default readme to true if undefined
   if (options.readme === undefined) options.readme = true;
 
@@ -74,6 +173,32 @@ async function scan(options: SyncOptions = {}) {
     console.log(`🎨 Color mode: ${options.color}`);
   }
 
+  // SINGLE MODE
+  if (pathArg) {
+      const absPath = path.resolve(pathArg);
+      console.log(`Scanning single project at: ${absPath}`);
+      
+      try {
+          const techsWithUrls = await analyzeProject(absPath, options);
+          
+          if (options.out) {
+              const outPath = path.resolve(options.out);
+              fs.writeFileSync(outPath, JSON.stringify(techsWithUrls, null, 2));
+              console.log(`✅ Generated stack output to: ${options.out}`);
+          } else {
+             const outPath = path.join(absPath, 'stack.json');
+             fs.writeFileSync(outPath, JSON.stringify(techsWithUrls, null, 2));
+             console.log(`✅ Generated stack.json at: ${outPath}`);
+          }
+
+      } catch (err: any) {
+          console.error(`❌ Error scanning project:`, err.message);
+          process.exit(1);
+      }
+      return;
+  }
+
+  // DEFAULT WORKSPACE MODE
   if (!fs.existsSync(BASE_DIR)) {
     console.log(`Creating stackscan directory at: ${BASE_DIR}`);
     fs.mkdirSync(BASE_DIR, { recursive: true });
@@ -92,106 +217,21 @@ async function scan(options: SyncOptions = {}) {
   console.log(`Found ${projectDirs.length} projects to process.\n`);
 
   const allProjects: { name: string; techs: any[] }[] = [];
-  const allTechs: any[] = [];
 
   for (const dir of projectDirs) {
     const projectPath = path.join(BASE_DIR, dir.name);
-    const packageJsonPath = path.join(projectPath, 'package.json');
 
-    if (fs.existsSync(packageJsonPath)) {
+    if (fs.existsSync(path.join(projectPath, 'package.json'))) {
       try {
-        const content = fs.readFileSync(packageJsonPath, 'utf-8');
-        const pkg = JSON.parse(content);
+        const techsWithUrls = await analyzeProject(projectPath, options);
         
-        // 1. Detect Tech
-        const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
-        const detectedTechs: any[] = [];
-
-        Object.keys(allDeps).forEach(dep => {
-          if (SKIPPED_TECHS.includes(dep)) return;
-
-          if (techMap[dep]) {
-            const tech = techMap[dep];
-            
-            // Determine Color
-            let color = null;
-            if (options.color === 'white') color = '#FFFFFF';
-            else if (options.color === 'black') color = '#000000';
-            else if (options.color && options.color.startsWith('#')) color = options.color;
-            else {
-               // Default to brand color
-               // Try to find hex by:
-               // 1. Exact dependency name (e.g. "react")
-               // 2. Tech name lowercased (e.g. "React" -> "react")
-               // 3. Tech name with spaces removed (e.g. "Tailwind CSS" -> "tailwindcss")
-               const depSlug = dep.toLowerCase();
-               const nameSlug = tech.name.toLowerCase();
-               const nameSlugNoSpaces = tech.name.toLowerCase().replace(/\s+/g, '');
-               
-               const hex = (simpleIconsHex as any)[depSlug] || 
-                           (simpleIconsHex as any)[nameSlug] || 
-                           (simpleIconsHex as any)[nameSlugNoSpaces];
-                           
-               if (hex) color = `#${hex}`;
-            }
-
-            detectedTechs.push({
-              name: tech.name,
-              slug: dep,
-              logo: tech.logo, // Raw path for resolution
-              type: tech.type,
-              color: color
-            });
-          }
-        });
-
-        // 2. Deduplicate by slug
-        let uniqueTechs = Array.from(new Set(detectedTechs.map(t => t.slug)))
-          .map(slug => detectedTechs.find(t => t.slug === slug)!);
-
-        // 3. Deduplicate by logo (avoid showing same logo multiple times)
-        const seenLogos = new Set<string>();
-        uniqueTechs = uniqueTechs.filter(t => {
-            if (seenLogos.has(t.logo)) {
-                return false;
-            }
-            seenLogos.add(t.logo);
-            return true;
-        });
-
-        // 4. Sort by Category Priority
-        uniqueTechs.sort((a, b) => {
-            const pA = getCategoryPriority(a.type);
-            const pB = getCategoryPriority(b.type);
-            if (pA !== pB) return pA - pB;
-            return a.name.localeCompare(b.name);
-        });
-        
-        // Resolve Assets (Copy & Fallback)
-        const assetsDir = path.join(process.cwd(), 'public', 'assets', 'logos');
-        if (options.copyAssets !== false) {
-             await copyAssets(uniqueTechs, assetsDir, { colorMode: options.color as any });
-        }
-
-        // Create URL-based version for Output
-        const techsWithUrls = uniqueTechs.map(t => ({
-            ...t,
-            logo: `https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/${t.logo}`,
-            relativePath: `./public/assets/logos/${t.logo}`
-        }));
-        
-        allTechs.push(...techsWithUrls);
-
-        // 3. Prepare Output (In-place)
-        // We write directly to the project folder
-        
-        // 4. Write File
+        // Write File
         fs.writeFileSync(
           path.join(projectPath, 'stack.json'), 
           JSON.stringify(techsWithUrls, null, 2)
         );
 
-        // 5. Generate Markdown
+        // Generate Markdown
         const mdContent = generateMarkdown(techsWithUrls);
         fs.writeFileSync(path.join(projectPath, 'stack.md'), mdContent);
 
@@ -201,7 +241,7 @@ async function scan(options: SyncOptions = {}) {
             techs: techsWithUrls
         });
 
-        console.log(`✅ ${dir.name.padEnd(20)} -> stack.json (${uniqueTechs.length} techs)`);
+        console.log(`✅ ${dir.name.padEnd(20)} -> stack.json (${techsWithUrls.length} techs)`);
 
       } catch (err: any) {
         console.error(`❌ Error processing ${dir.name}:`, err.message);
