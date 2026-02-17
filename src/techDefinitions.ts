@@ -1506,7 +1506,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "docker",
     "name": "Docker",
     "aliases": [
-      "docker"
+      "docker",
+      "dockerode"
     ],
     "category": "container",
     "logo": "container/docker.svg",
