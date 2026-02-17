@@ -125,7 +125,10 @@ export const techDefinitions: TechDefinition[] = [
     "id": "remix",
     "name": "Remix",
     "aliases": [
-      "remix"
+      "remix",
+      "@remix-run/react",
+      "@remix-run/node",
+      "@remix-run/serve"
     ],
     "category": "frontend",
     "logo": "frontend/remix.svg",
@@ -205,7 +208,10 @@ export const techDefinitions: TechDefinition[] = [
     "id": "angular",
     "name": "Angular",
     "aliases": [
-      "@angular/core"
+      "@angular/core",
+      "@angular/common",
+      "@angular/platform-browser",
+      "@angular/cli"
     ],
     "category": "frontend",
     "logo": "frontend/angular.svg",
@@ -215,7 +221,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "lit",
     "name": "Lit",
     "aliases": [
-      "lit"
+      "lit",
+      "lit-element",
+      "lit-html"
     ],
     "category": "frontend",
     "logo": "frontend/lit.svg",
@@ -235,7 +243,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "ember",
     "name": "Ember",
     "aliases": [
-      "ember-source"
+      "ember-source",
+      "ember-cli"
     ],
     "category": "frontend",
     "logo": "frontend/emberdotjs.svg",
@@ -335,22 +344,15 @@ export const techDefinitions: TechDefinition[] = [
     "id": "mantine",
     "name": "Mantine",
     "aliases": [
-      "@mantine/core"
+      "@mantine/core",
+      "@mantine/hooks",
+      "@mantine/form"
     ],
     "category": "css",
     "logo": "fallback/mantine-logo.svg",
     "frameworks": []
   },
-  {
-    "id": "shadcnui",
-    "name": "shadcn/ui",
-    "aliases": [
-      "shadcn"
-    ],
-    "category": "css",
-    "logo": "css/shadcnui.svg",
-    "frameworks": []
-  },
+
   {
     "id": "daisyui",
     "name": "DaisyUI",
@@ -385,7 +387,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "headlessui",
     "name": "Headless UI",
     "aliases": [
-      "@headlessui/react"
+      "@headlessui/react",
+      "@headlessui/vue"
     ],
     "category": "css",
     "logo": "css/headlessui.svg",
@@ -395,7 +398,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "emotion",
     "name": "Emotion",
     "aliases": [
-      "@emotion/react"
+      "@emotion/react",
+      "@emotion/styled",
+      "@emotion/css"
     ],
     "category": "css",
     "logo": "css/emotion.svg",
@@ -455,7 +460,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "redux",
     "name": "Redux",
     "aliases": [
-      "redux"
+      "redux",
+      "react-redux",
+      "@reduxjs/toolkit"
     ],
     "category": "state",
     "logo": "state/redux.svg",
@@ -465,7 +472,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "mobx",
     "name": "MobX",
     "aliases": [
-      "mobx"
+      "mobx",
+      "mobx-react",
+      "mobx-react-lite"
     ],
     "category": "state",
     "logo": "state/mobx.svg",
@@ -505,7 +514,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "xstate",
     "name": "XState",
     "aliases": [
-      "xstate"
+      "xstate",
+      "@xstate/react",
+      "@xstate/fsm"
     ],
     "category": "state",
     "logo": "state/xstate.svg",
@@ -515,7 +526,10 @@ export const techDefinitions: TechDefinition[] = [
     "id": "tanstackquery",
     "name": "TanStack Query",
     "aliases": [
-      "@tanstack/react-query"
+      "@tanstack/react-query",
+      "@tanstack/vue-query",
+      "@tanstack/svelte-query",
+      "react-query"
     ],
     "category": "state",
     "logo": "fallback/reactquery.svg",
@@ -725,7 +739,11 @@ export const techDefinitions: TechDefinition[] = [
     "id": "storybook",
     "name": "Storybook",
     "aliases": [
-      "@storybook/react"
+      "storybook",
+      "@storybook/react",
+      "@storybook/vue",
+      "@storybook/angular",
+      "@storybook/addon-essentials"
     ],
     "category": "testing",
     "logo": "testing/storybook.svg",
@@ -905,7 +923,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "prisma",
     "name": "Prisma",
     "aliases": [
-      "prisma"
+      "prisma",
+      "@prisma/client"
     ],
     "category": "orm",
     "logo": "orm/prisma.svg",
@@ -945,7 +964,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "postgresql",
     "name": "PostgreSQL",
     "aliases": [
-      "pg"
+      "pg",
+      "pg-promise",
+      "node-postgres"
     ],
     "category": "database",
     "logo": "database/postgresql.svg",
@@ -976,7 +997,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "sqlite",
     "name": "SQLite",
     "aliases": [
-      "sqlite3"
+      "sqlite3",
+      "better-sqlite3"
     ],
     "category": "database",
     "logo": "database/sqlite.svg",
@@ -996,7 +1018,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "redis",
     "name": "Redis",
     "aliases": [
-      "redis"
+      "redis",
+      "ioredis",
+      "@redis/client"
     ],
     "category": "database",
     "logo": "database/redis.svg",
@@ -1176,7 +1200,11 @@ export const techDefinitions: TechDefinition[] = [
     "id": "auth0",
     "name": "Auth0",
     "aliases": [
-      "auth0"
+      "auth0",
+      "auth0-js",
+      "@auth0/auth0-react",
+      "@auth0/auth0-vue",
+      "@auth0/auth0-angular"
     ],
     "category": "auth",
     "logo": "auth/auth0.svg",
@@ -1186,7 +1214,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "clerk",
     "name": "Clerk",
     "aliases": [
-      "@clerk/nextjs"
+      "@clerk/nextjs",
+      "@clerk/clerk-react",
+      "@clerk/clerk-sdk-node"
     ],
     "category": "auth",
     "logo": "auth/clerk.svg",
@@ -1196,7 +1226,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "supabaseauth",
     "name": "Supabase Auth",
     "aliases": [
-      "@supabase/auth-helpers-nextjs"
+      "@supabase/auth-helpers-nextjs",
+      "@supabase/auth-helpers-react",
+      "@supabase/ssr"
     ],
     "category": "auth",
     "logo": "database/supabase.svg",
@@ -1206,7 +1238,10 @@ export const techDefinitions: TechDefinition[] = [
     "id": "firebaseauth",
     "name": "Firebase Auth",
     "aliases": [
-      "firebase"
+      "firebase",
+      "firebase-admin",
+      "@firebase/app",
+      "@firebase/auth"
     ],
     "category": "auth",
     "logo": "auth/firebase.svg",
@@ -1288,7 +1323,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "langchain",
     "name": "LangChain",
     "aliases": [
-      "langchain"
+      "langchain",
+      "@langchain/core",
+      "@langchain/openai"
     ],
     "category": "ai",
     "logo": "ai/langchain.svg",
@@ -1468,7 +1505,10 @@ export const techDefinitions: TechDefinition[] = [
     "id": "aws",
     "name": "AWS",
     "aliases": [
-      "aws-sdk"
+      "aws-sdk",
+      "@aws-sdk/client-s3",
+      "@aws-sdk/client-dynamodb",
+      "@aws-sdk/client-lambda"
     ],
     "category": "cloud",
     "logo": "cloud/amazonwebservices.svg",
@@ -1688,7 +1728,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "shopify",
     "name": "Shopify",
     "aliases": [
-      "@shopify/shopify-api"
+      "@shopify/shopify-api",
+      "shopify"
     ],
     "category": "cms",
     "logo": "cms/shopify.svg",
@@ -1948,7 +1989,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "stripe",
     "name": "Stripe",
     "aliases": [
-      "stripe"
+      "stripe",
+      "@stripe/stripe-js",
+      "@stripe/react-stripe-js"
     ],
     "category": "payment",
     "logo": "payment/stripe.svg",
@@ -1972,6 +2015,59 @@ export const techDefinitions: TechDefinition[] = [
     ],
     "category": "payment",
     "logo": "fallback/lemonsqueezy.svg",
+    "frameworks": []
+  },
+  {
+    "id": "css",
+    "name": "CSS",
+    "aliases": [
+      "css"
+    ],
+    "category": "language",
+    "logo": "language/css3.svg",
+    "frameworks": []
+  },
+  {
+    "id": "html",
+    "name": "HTML",
+    "aliases": [
+      "html"
+    ],
+    "category": "language",
+    "logo": "language/html5.svg",
+    "frameworks": []
+  },
+  {
+    "id": "convex",
+    "name": "Convex",
+    "aliases": [
+      "convex",
+      "convex-dev"
+    ],
+    "category": "backend",
+    "logo": "backend/convex.svg",
+    "frameworks": []
+  },
+  {
+    "id": "shadcn",
+    "name": "shadcn/ui",
+    "aliases": [
+      "shadcn",
+      "shadcn-ui",
+      "shadcn/ui"
+    ],
+    "category": "css",
+    "logo": "css/shadcn.svg",
+    "frameworks": []
+  },
+  {
+    "id": "springboot",
+    "name": "Spring Boot",
+    "aliases": [
+      "spring-boot"
+    ],
+    "category": "backend",
+    "logo": "backend/springboot.svg",
     "frameworks": []
   }
 ];
