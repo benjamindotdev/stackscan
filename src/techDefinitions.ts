@@ -2069,5 +2069,90 @@ export const techDefinitions: TechDefinition[] = [
     "category": "backend",
     "logo": "backend/springboot.svg",
     "frameworks": []
+  },
+  {
+    "id": "chalk",
+    "name": "Chalk",
+    "aliases": [
+      "chalk"
+    ],
+    "category": "cli",
+    "logo": "fallback/chalk.svg",
+    "frameworks": []
+  },
+  {
+    "id": "commander",
+    "name": "Commander.js",
+    "aliases": [
+      "commander"
+    ],
+    "category": "cli",
+    "logo": "fallback/commander.svg",
+    "frameworks": []
+  },
+  {
+    "id": "ora",
+    "name": "Ora",
+    "aliases": [
+      "ora"
+    ],
+    "category": "cli",
+    "logo": "fallback/ora.svg",
+    "frameworks": []
+  },
+  {
+    "id": "cosmiconfig",
+    "name": "Cosmiconfig",
+    "aliases": [
+      "cosmiconfig"
+    ],
+    "category": "utility",
+    "logo": "fallback/cosmiconfig.svg",
+    "frameworks": []
+  },
+  {
+    "id": "fastglob",
+    "name": "fast-glob",
+    "aliases": [
+      "fast-glob"
+    ],
+    "category": "utility",
+    "logo": "fallback/fast-glob.svg",
+    "frameworks": []
+  },
+  {
+    "id": "fsextra",
+    "name": "fs-extra",
+    "aliases": [
+      "fs-extra"
+    ],
+    "category": "utility",
+    "logo": "fallback/fs-extra.svg",
+    "frameworks": []
+  },
+  {
+    "id": "lucide",
+    "name": "Lucide",
+    "aliases": [
+      "lucide",
+      "lucide-react",
+      "lucide-static",
+      "lucide-vue-next",
+      "lucide-angular",
+      "lucide-svelte"
+    ],
+    "category": "utility",
+    "logo": "utility/lucide.svg",
+    "frameworks": []
+  },
+  {
+    "id": "tsnode",
+    "name": "ts-node",
+    "aliases": [
+      "ts-node"
+    ],
+    "category": "runtime",
+    "logo": "runtime/tsnode.svg",
+    "frameworks": []
   }
 ];
