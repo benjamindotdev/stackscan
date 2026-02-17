@@ -834,7 +834,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "figma",
     "name": "Figma",
     "aliases": [
-      "figma"
+      "figma",
+        "figma-api"
     ],
     "category": "utility",
     "logo": "utility/figma.svg",
