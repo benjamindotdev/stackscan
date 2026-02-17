@@ -10,6 +10,43 @@ const SKIPPED_TECHS = [
   'react-dom',
 ];
 
+const CATEGORY_PRIORITY = [
+  "language",
+  "framework", 
+  "mobile",
+  "frontend",
+  "backend",
+  "runtime",
+  "database",
+  "orm",
+  "auth",
+  "api",
+  "state",
+  "css",
+  "cloud",
+  "hosting",
+  "devops",
+  "container",
+  "ci",
+  "testing",
+  "build",
+  "lint",
+  "format",
+  "automation",
+  "package",
+  "ai",
+  "network",
+  "utility",
+  "cms",
+  "ssg",
+  "payment"
+];
+
+const getCategoryPriority = (cat: string) => {
+    const idx = CATEGORY_PRIORITY.indexOf(cat ? cat.toLowerCase() : "");
+    return idx === -1 ? 999 : idx;
+};
+
 // Helper to convert "example project" -> "exampleProject"
 function toCamelCase(str: string): string {
   return str
@@ -120,6 +157,14 @@ async function scan(options: SyncOptions = {}) {
             }
             seenLogos.add(t.logo);
             return true;
+        });
+
+        // 4. Sort by Category Priority
+        uniqueTechs.sort((a, b) => {
+            const pA = getCategoryPriority(a.type);
+            const pB = getCategoryPriority(b.type);
+            if (pA !== pB) return pA - pB;
+            return a.name.localeCompare(b.name);
         });
         
         // Resolve Assets (Copy & Fallback)
