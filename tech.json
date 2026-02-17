@@ -8,6 +8,14 @@
     "relativePath": "./public/assets/logos/language/typescript.svg"
   },
   {
+    "name": "Node.js",
+    "slug": "@types/node",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/runtime/nodejs.svg",
+    "type": "runtime",
+    "color": null,
+    "relativePath": "./public/assets/logos/runtime/nodejs.svg"
+  },
+  {
     "name": "Tsup",
     "slug": "tsup",
     "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/package.svg",
@@ -18,26 +26,26 @@
   {
     "name": "Cosmiconfig",
     "slug": "cosmiconfig",
-    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/wrench.svg",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/utility/cosmiconfig.svg",
     "type": "utility",
     "color": null,
-    "relativePath": "./public/assets/logos/defaults/wrench.svg"
+    "relativePath": "./public/assets/logos/utility/cosmiconfig.svg"
   },
   {
     "name": "fast-glob",
     "slug": "fast-glob",
-    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/wrench.svg",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/utility/fast-glob.svg",
     "type": "utility",
     "color": null,
-    "relativePath": "./public/assets/logos/defaults/wrench.svg"
+    "relativePath": "./public/assets/logos/utility/fast-glob.svg"
   },
   {
     "name": "fs-extra",
     "slug": "fs-extra",
-    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/wrench.svg",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/utility/fs-extra.svg",
     "type": "utility",
     "color": null,
-    "relativePath": "./public/assets/logos/defaults/wrench.svg"
+    "relativePath": "./public/assets/logos/utility/fs-extra.svg"
   },
   {
     "name": "Lucide",
@@ -50,25 +58,25 @@
   {
     "name": "Chalk",
     "slug": "chalk",
-    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/terminal.svg",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/cli/chalk.svg",
     "type": "cli",
     "color": null,
-    "relativePath": "./public/assets/logos/defaults/terminal.svg"
+    "relativePath": "./public/assets/logos/cli/chalk.svg"
   },
   {
     "name": "Commander.js",
     "slug": "commander",
-    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/terminal.svg",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/cli/commander.svg",
     "type": "cli",
     "color": null,
-    "relativePath": "./public/assets/logos/defaults/terminal.svg"
+    "relativePath": "./public/assets/logos/cli/commander.svg"
   },
   {
     "name": "Ora",
     "slug": "ora",
-    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/terminal.svg",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/cli/ora.svg",
     "type": "cli",
     "color": null,
-    "relativePath": "./public/assets/logos/defaults/terminal.svg"
+    "relativePath": "./public/assets/logos/cli/ora.svg"
   }
 ]
