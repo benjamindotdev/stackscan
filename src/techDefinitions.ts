@@ -349,7 +349,7 @@ export const techDefinitions: TechDefinition[] = [
       "@mantine/form"
     ],
     "category": "css",
-    "logo": "fallback/mantine-logo.svg",
+    "logo": "css/mantine.svg",
     "frameworks": []
   },
 
@@ -817,6 +817,77 @@ export const techDefinitions: TechDefinition[] = [
     ],
     "category": "runtime",
     "logo": "runtime/deno.svg",
+    "frameworks": []
+  },
+  {
+    "id": "nodejs",
+    "name": "Node.js",
+    "aliases": [
+      "@types/node",
+      "node"
+    ],
+    "category": "runtime",
+    "logo": "runtime/nodejs.svg",
+    "frameworks": []
+  },
+  {
+    "id": "figma",
+    "name": "Figma",
+    "aliases": [
+      "figma"
+    ],
+    "category": "utility",
+    "logo": "utility/figma.svg",
+    "frameworks": []
+  },
+  {
+    "id": "notion",
+    "name": "Notion",
+    "aliases": [
+      "notion"
+    ],
+    "category": "utility",
+    "logo": "utility/notion.svg",
+    "frameworks": []
+  },
+  {
+    "id": "slack",
+    "name": "Slack",
+    "aliases": [
+      "slack"
+    ],
+    "category": "utility",
+    "logo": "utility/slack.svg",
+    "frameworks": []
+  },
+  {
+    "id": "trello",
+    "name": "Trello",
+    "aliases": [
+      "trello"
+    ],
+    "category": "utility",
+    "logo": "utility/trello.svg",
+    "frameworks": []
+  },
+  {
+    "id": "githubcopilot",
+    "name": "GitHub Copilot",
+    "aliases": [
+      "github-copilot"
+    ],
+    "category": "ai",
+    "logo": "ai/githubcopilot.svg",
+    "frameworks": []
+  },
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "aliases": [
+      "chatgpt"
+    ],
+    "category": "ai",
+    "logo": "ai/openai.svg",
     "frameworks": []
   },
   {
@@ -1511,7 +1582,7 @@ export const techDefinitions: TechDefinition[] = [
       "@aws-sdk/client-lambda"
     ],
     "category": "cloud",
-    "logo": "cloud/amazonwebservices.svg",
+    "logo": "cloud/aws.svg",
     "frameworks": []
   },
   {
@@ -2077,7 +2148,7 @@ export const techDefinitions: TechDefinition[] = [
       "chalk"
     ],
     "category": "cli",
-    "logo": "fallback/chalk.svg",
+    "logo": "cli/chalk.svg",
     "frameworks": []
   },
   {
@@ -2087,7 +2158,7 @@ export const techDefinitions: TechDefinition[] = [
       "commander"
     ],
     "category": "cli",
-    "logo": "fallback/commander.svg",
+    "logo": "cli/commander.svg",
     "frameworks": []
   },
   {
@@ -2097,7 +2168,7 @@ export const techDefinitions: TechDefinition[] = [
       "ora"
     ],
     "category": "cli",
-    "logo": "fallback/ora.svg",
+    "logo": "cli/ora.svg",
     "frameworks": []
   },
   {
@@ -2107,7 +2178,7 @@ export const techDefinitions: TechDefinition[] = [
       "cosmiconfig"
     ],
     "category": "utility",
-    "logo": "fallback/cosmiconfig.svg",
+    "logo": "utility/cosmiconfig.svg",
     "frameworks": []
   },
   {
@@ -2117,7 +2188,7 @@ export const techDefinitions: TechDefinition[] = [
       "fast-glob"
     ],
     "category": "utility",
-    "logo": "fallback/fast-glob.svg",
+    "logo": "utility/fast-glob.svg",
     "frameworks": []
   },
   {
@@ -2127,7 +2198,7 @@ export const techDefinitions: TechDefinition[] = [
       "fs-extra"
     ],
     "category": "utility",
-    "logo": "fallback/fs-extra.svg",
+    "logo": "utility/fs-extra.svg",
     "frameworks": []
   },
   {
