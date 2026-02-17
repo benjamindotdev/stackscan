@@ -1,0 +1,18 @@
+[
+  {
+    "name": "TypeScript",
+    "slug": "typescript",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/language/typescript.svg",
+    "type": "language",
+    "color": "#3178C6",
+    "relativePath": "./public/assets/logos/language/typescript.svg"
+  },
+  {
+    "name": "Tsup",
+    "slug": "tsup",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/package.svg",
+    "type": "build",
+    "color": null,
+    "relativePath": "./public/assets/logos/defaults/package.svg"
+  }
+]
