@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 import chalk from "chalk";
 import { createRequire } from "module";
-import { DetectorResult, StackSyncConfig } from "./types";
+import { DetectorResult, StackScanConfig } from "./types";
 import { DEFAULT_CATEGORY_ICONS } from "./defaults";
 import simpleIconsHex from "./simple-icons-hex.json";
 
@@ -11,7 +11,7 @@ const require = createRequire(import.meta.url);
 export async function writeOutput(
     outPath: string,
     techs: DetectorResult[],
-    config: StackSyncConfig,
+    config: StackScanConfig,
     format: "json" | "markdown" = "json",
     assetsOutPath?: string
 ) {
@@ -50,7 +50,7 @@ export async function writeOutput(
     }
 }
 
-export async function copyAssets(techs: DetectorResult[], dest: string, config: StackSyncConfig): Promise<Set<string>> {
+export async function copyAssets(techs: DetectorResult[], dest: string, config: StackScanConfig): Promise<Set<string>> {
     // Assume assets are in ../public/assets/logos relative to this file (dist/output.js or src/output.ts)
     const srcDir = path.resolve(__dirname, "../public/assets/logos");
     

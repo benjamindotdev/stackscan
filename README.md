@@ -38,10 +38,8 @@ stackscan
 ## Usage
 
 1.  **Prepare Input**: 
-    *   Place your project folders inside `stackscan/`.
-    *   **OR** simply drop your `package.json` files directly into `stackscan/`. 
-        *   If you have multiple, you can name them `package (1).json`, `package (2).json`, etc.
-        *   StackScan will automatically create folders based on the project name defined in each file.
+    *   Place a folder for each desired project inside `public/stackscan/`.
+    *   Each folder should contain a `package.json` file.
 2.  **Run Scan**:
 
 ```bash
@@ -60,10 +58,10 @@ npx stackscan add ./path/to/package.json
 npx stackscan add ../my-project
 ```
 
-This will copy the `package.json` into a new folder inside `stackscan/` (e.g., `stackscan/my-project/`), handling name collisions automatically.
+This will copy the `package.json` into a new folder inside `public/stackscan/` (e.g., `public/stackscan/my-project/`), handling name collisions automatically.
 
 This will:
-*   Scan all projects in `stackscan/`.
+*   Scan all projects in `public/stackscan/`.
 *   Generate `stack.json` and `stack.md` inside each project folder.
 *   Copy logo assets to `public/assets/logos/`.
 *   Update your root `README.md` with a "My Projects" section.
@@ -85,7 +83,7 @@ npx stackscan scan --color brand
 
 ## Output
 
-For each project in `stackscan/`, a `stack.json` is generated in the same folder.
+For each project in `public/stackscan/`, a `stack.json` is generated in the same folder.
 
 Example `stack.json`:
 
@@ -149,7 +147,7 @@ jobs:
 
 ---
 
-## What StackSync does *not* do
+## What StackScan does *not* do
 
 * ❌ It does not execute or analyze runtime code
 * ❌ It does not attempt to infer architectural quality

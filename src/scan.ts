@@ -269,8 +269,8 @@ function updateRootReadme(projects: { name: string; techs: any[] }[]) {
     }
 
     let readmeContent = fs.readFileSync(readmePath, 'utf-8');
-    const startMarker = '<!-- STACKSYNC_START -->';
-    const endMarker = '<!-- STACKSYNC_END -->';
+    const startMarker = '<!-- STACKSCAN_START -->';
+    const endMarker = '<!-- STACKSCAN_END -->';
 
     let newSection = `${startMarker}\n## My Projects\n\n`;
     

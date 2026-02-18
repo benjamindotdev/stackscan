@@ -14,7 +14,7 @@ export interface TechDefinition {
     frameworks?: string[];
 }
 
-export interface StackSyncConfig {
+export interface StackScanConfig {
     ignore?: string[];
     aliases?: Record<string, string>;
     logosPath?: string;
