@@ -81,6 +81,16 @@ npx stackscan scan --color brand
 
 ---
 
+## Dependabot & Security
+
+When hosting `package.json` files for analysis, security tools like Dependabot may incorrectly flag them as vulnerable dependencies of your project.
+
+To prevent this, StackScan will **automatically rename** any `package.json` found in `public/stackscan/` to `_package.json`.
+- Dependabot ignores `_package.json`.
+- StackScan prioritizes reading `_package.json` on future runs.
+
+---
+
 ## Output
 
 For each project in `public/stackscan/`, a `stack.json` is generated in the same folder.
