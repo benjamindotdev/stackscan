@@ -16,6 +16,14 @@
     "relativePath": "./public/assets/logos/runtime/nodejs.svg"
   },
   {
+    "name": "Vitest",
+    "slug": "vitest",
+    "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/testing/vitest.svg",
+    "type": "testing",
+    "color": "#6E9F18",
+    "relativePath": "./public/assets/logos/testing/vitest.svg"
+  },
+  {
     "name": "Tsup",
     "slug": "tsup",
     "logo": "https://raw.githubusercontent.com/benjamindotdev/stackscan/main/public/assets/logos/defaults/package.svg",
