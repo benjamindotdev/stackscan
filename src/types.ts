@@ -2,7 +2,12 @@ export interface DetectorResult {
     name: string;
     logo: string;
     type: string;
-    color?: string;
+    color?: string | null;
+}
+
+export interface StackItem extends DetectorResult {
+    slug: string;
+    relativePath?: string;
 }
 
 export interface TechDefinition {

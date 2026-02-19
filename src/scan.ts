@@ -4,6 +4,7 @@ import { XMLParser } from 'fast-xml-parser';
 import { techMap } from './techMap';
 import simpleIconsHex from './simple-icons-hex.json';
 import { generateMarkdown, copyAssets } from './output';
+import { StackItem } from './types';
 
 const BASE_DIR = path.join(process.cwd(), 'public', 'stackscan');
 
@@ -27,8 +28,8 @@ function getPackageJson(projectPath: string) {
         try {
             console.log(`Renaming ${pkgPath} to ${pkgPathUnderscore}`);
             fs.renameSync(pkgPath, pkgPathUnderscore);
-        } catch (e: any) {
-            console.warn(`Failed to rename package.json to _package.json: ${e.message}`);
+        } catch (e: unknown) {
+            if (e instanceof Error) console.warn(`Failed to rename package.json to _package.json: ${e.message}`);
         }
     }
     
@@ -37,8 +38,8 @@ function getPackageJson(projectPath: string) {
         try {
             const content = fs.readFileSync(pkgPathUnderscore, 'utf-8');
             return JSON.parse(content);
-        } catch (e: any) {
-             console.warn(`Failed to read _package.json: ${e.message}`);
+        } catch (e: unknown) {
+             if (e instanceof Error) console.warn(`Failed to read _package.json: ${e.message}`);
         }
     }
     
@@ -47,8 +48,8 @@ function getPackageJson(projectPath: string) {
         try {
             const content = fs.readFileSync(pkgPath, 'utf-8');
             return JSON.parse(content);
-        } catch (e: any) {
-             console.warn(`Failed to read package.json: ${e.message}`);
+        } catch (e: unknown) {
+             if (e instanceof Error) console.warn(`Failed to read package.json: ${e.message}`);
         }
     }
     
@@ -68,8 +69,8 @@ function getPomXml(projectPath: string) {
         try {
             console.log(`Renaming ${pomPath} to ${pomPathUnderscore}`);
             fs.renameSync(pomPath, pomPathUnderscore);
-        } catch (e: any) {
-            console.warn(`Failed to rename pom.xml to _pom.xml: ${e.message}`);
+        } catch (e: unknown) {
+            if (e instanceof Error) console.warn(`Failed to rename pom.xml to _pom.xml: ${e.message}`);
         }
     }
     
@@ -78,14 +79,14 @@ function getPomXml(projectPath: string) {
     if (fs.existsSync(pomPathUnderscore)) {
         try {
             xmlContent = fs.readFileSync(pomPathUnderscore, 'utf-8');
-        } catch (e: any) {
-            console.warn(`Failed to read _pom.xml: ${e.message}`);
+        } catch (e: unknown) {
+             if (e instanceof Error) console.warn(`Failed to read _pom.xml: ${e.message}`);
         }
     } else if (fs.existsSync(pomPath)) {
         try {
             xmlContent = fs.readFileSync(pomPath, 'utf-8');
-        } catch (e: any) {
-            console.warn(`Failed to read pom.xml: ${e.message}`);
+        } catch (e: unknown) {
+             if (e instanceof Error) console.warn(`Failed to read pom.xml: ${e.message}`);
         }
     }
     
@@ -93,8 +94,8 @@ function getPomXml(projectPath: string) {
         try {
             const parser = new XMLParser();
             return parser.parse(xmlContent);
-        } catch (e: any) {
-            console.warn(`Failed to parse XML: ${e.message}`);
+        } catch (e: unknown) {
+             if (e instanceof Error) console.warn(`Failed to parse XML: ${e.message}`);
         }
     }
     
@@ -158,7 +159,7 @@ interface SyncOptions {
   out?: string;
 }
 
-async function analyzeProject(projectPath: string, options: SyncOptions): Promise<any[]> {
+async function analyzeProject(projectPath: string, options: SyncOptions): Promise<StackItem[]> {
     const pkg = getPackageJson(projectPath);
     const pom = getPomXml(projectPath);
 
@@ -167,7 +168,7 @@ async function analyzeProject(projectPath: string, options: SyncOptions): Promis
     }
 
     // 1. Detect Tech
-    const allDeps: Record<string, any> = {};
+    const allDeps: Record<string, string> = {};
 
     // Process package.json
     if (pkg) {
@@ -181,14 +182,14 @@ async function analyzeProject(projectPath: string, options: SyncOptions): Promis
             deps = [deps];
         }
         
-        deps.forEach((d: any) => {
+        deps.forEach((d: { groupId?: string; artifactId?: string }) => {
              // Map groupId:artifactId and just artifactId
              if (d.artifactId) allDeps[d.artifactId] = "latest";
              if (d.groupId && d.artifactId) allDeps[`${d.groupId}:${d.artifactId}`] = "latest";
         });
     }
 
-    const detectedTechs: any[] = [];
+    const detectedTechs: StackItem[] = [];
 
     Object.keys(allDeps).forEach(dep => {
       if (SKIPPED_TECHS.includes(dep)) return;
@@ -207,9 +208,10 @@ async function analyzeProject(projectPath: string, options: SyncOptions): Promis
            const nameSlug = tech.name.toLowerCase();
            const nameSlugNoSpaces = tech.name.toLowerCase().replace(/\s+/g, '');
            
-           const hex = (simpleIconsHex as any)[depSlug] || 
-                       (simpleIconsHex as any)[nameSlug] || 
-                       (simpleIconsHex as any)[nameSlugNoSpaces];
+           const icons = simpleIconsHex as Record<string, string>;
+           const hex = icons[depSlug] || 
+                       icons[nameSlug] || 
+                       icons[nameSlugNoSpaces];
                        
            if (hex) color = `#${hex}`;
         }
@@ -302,8 +304,8 @@ async function scan(targetPath?: string | object, optionsOrUndefined?: SyncOptio
              console.log(`✅ Generated stack.json at: ${outPath}`);
           }
 
-      } catch (err: any) {
-          console.error(`❌ Error scanning project:`, err.message);
+      } catch (err: unknown) {
+          if (err instanceof Error) console.error(`❌ Error scanning project:`, err.message);
           process.exit(1);
       }
       return;
@@ -327,7 +329,7 @@ async function scan(targetPath?: string | object, optionsOrUndefined?: SyncOptio
 
   console.log(`Found ${projectDirs.length} projects to process.\n`);
 
-  const allProjects: { name: string; techs: any[] }[] = [];
+  const allProjects: { name: string; techs: StackItem[] }[] = [];
 
   for (const dir of projectDirs) {
     const projectPath = path.join(BASE_DIR, dir.name);
@@ -358,8 +360,8 @@ async function scan(targetPath?: string | object, optionsOrUndefined?: SyncOptio
 
         console.log(`✅ ${dir.name.padEnd(20)} -> stack.json (${techsWithUrls.length} techs)`);
 
-      } catch (err: any) {
-        console.error(`❌ Error processing ${dir.name}:`, err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) console.error(`❌ Error processing ${dir.name}:`, err.message);
       }
     } else {
       console.warn(`⚠️  Skipping "${dir.name}": No package.json or pom.xml found.`);
@@ -376,7 +378,7 @@ async function scan(targetPath?: string | object, optionsOrUndefined?: SyncOptio
   console.log('\n✨ Sync complete.');
 }
 
-function updateRootReadme(projects: { name: string; techs: any[] }[]) {
+function updateRootReadme(projects: { name: string; techs: StackItem[] }[]) {
     const readmePath = path.join(process.cwd(), 'README.md');
     if (!fs.existsSync(readmePath)) {
         console.log('⚠️  No root README.md found to update.');
