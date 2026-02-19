@@ -15,8 +15,14 @@ function getPackageJson(projectPath: string) {
     const pkgPath = path.join(projectPath, 'package.json');
     const pkgPathUnderscore = path.join(projectPath, '_package.json');
     
+    // Check if we are inside public/stackscan
+    // We only want to rename inside public/stackscan to avoid messing up root or other locations
+    // We check if the projectPath contains 'public/stackscan' or 'public\\stackscan'
+    const isInsideStackScanDir = projectPath.includes(path.join('public', 'stackscan'));
+
     // Priority 1: Check for active package.json and rename it to avoid dependabot
-    if (fs.existsSync(pkgPath)) {
+    // BUT ONLY if we are in the designated directory
+    if (fs.existsSync(pkgPath) && isInsideStackScanDir) {
         try {
             console.log(`Renaming ${pkgPath} to ${pkgPathUnderscore}`);
             fs.renameSync(pkgPath, pkgPathUnderscore);
@@ -32,6 +38,16 @@ function getPackageJson(projectPath: string) {
             return JSON.parse(content);
         } catch (e: any) {
             throw new Error(`Failed to read _package.json: ${e.message}`);
+        }
+    }
+    
+    // Priority 3: Read package.json (fallback if not renamed)
+    if (fs.existsSync(pkgPath)) {
+        try {
+            const content = fs.readFileSync(pkgPath, 'utf-8');
+            return JSON.parse(content);
+        } catch (e: any) {
+            throw new Error(`Failed to read package.json: ${e.message}`);
         }
     }
     
