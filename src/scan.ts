@@ -10,6 +10,34 @@ const SKIPPED_TECHS = [
   'react-dom',
 ];
 
+// Helper to look for package.json or _package.json
+function getPackageJson(projectPath: string) {
+    const pkgPath = path.join(projectPath, 'package.json');
+    const pkgPathUnderscore = path.join(projectPath, '_package.json');
+    
+    // Priority 1: Check for active package.json and rename it to avoid dependabot
+    if (fs.existsSync(pkgPath)) {
+        try {
+            console.log(`Renaming ${pkgPath} to ${pkgPathUnderscore}`);
+            fs.renameSync(pkgPath, pkgPathUnderscore);
+        } catch (e: any) {
+            console.warn(`Failed to rename package.json to _package.json: ${e.message}`);
+        }
+    }
+    
+    // Priority 2: Read _package.json
+    if (fs.existsSync(pkgPathUnderscore)) {
+        try {
+            const content = fs.readFileSync(pkgPathUnderscore, 'utf-8');
+            return JSON.parse(content);
+        } catch (e: any) {
+            throw new Error(`Failed to read _package.json: ${e.message}`);
+        }
+    }
+    
+    return null;
+}
+
 const CATEGORY_PRIORITY = [
   "language",
   "framework", 
@@ -67,14 +95,11 @@ interface SyncOptions {
 }
 
 async function analyzeProject(projectPath: string, options: SyncOptions): Promise<any[]> {
-    const packageJsonPath = path.join(projectPath, 'package.json');
-    if (!fs.existsSync(packageJsonPath)) {
-        throw new Error(`No package.json found at ${packageJsonPath}`);
+    const pkg = getPackageJson(projectPath);
+    if (!pkg) {
+        throw new Error(`No package.json or _package.json found at ${projectPath}`);
     }
 
-    const content = fs.readFileSync(packageJsonPath, 'utf-8');
-    const pkg = JSON.parse(content);
-    
     // 1. Detect Tech
     const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
     const detectedTechs: any[] = [];
