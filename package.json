@@ -11,8 +11,11 @@
   "scripts": {
     "build": "tsup src --format cjs,esm --dts --shims",
     "dev": "tsup src --watch",
-    "start": "node dist/cli.js",
-    "scan": "ts-node src/scan.ts"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "scan": "ts-node src/scan.ts",
+    "start": "node dist/cli.js"
   },
   "keywords": [
     "tech-stack",
@@ -50,8 +53,10 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^24.10.1",
+    "@vitest/coverage-v8": "^4.0.18",
     "simple-icons": "^15.22.0",
     "tsup": "^8.0.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^4.0.18"
   }
 }

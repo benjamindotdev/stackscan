@@ -539,7 +539,7 @@ export const techDefinitions: TechDefinition[] = [
     "id": "rtkquery",
     "name": "RTK Query",
     "aliases": [
-      "@reduxjs/toolkit"
+      "@rtk-query/graphql-request-base-query"
     ],
     "category": "state",
     "logo": "state/redux.svg",
@@ -1583,7 +1583,6 @@ export const techDefinitions: TechDefinition[] = [
     "aliases": [
       "aws-sdk",
       "@aws-sdk/client-s3",
-      "@aws-sdk/client-dynamodb",
       "@aws-sdk/client-lambda"
     ],
     "category": "cloud",

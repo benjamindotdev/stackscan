@@ -6,3 +6,4 @@ playground-app/
 stackscan/
 .npmrc
 test-project/
+coverage/
