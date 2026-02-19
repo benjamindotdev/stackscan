@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { XMLParser } from 'fast-xml-parser';
 import { techMap } from './techMap';
 import simpleIconsHex from './simple-icons-hex.json';
 import { generateMarkdown, copyAssets } from './output';
@@ -37,7 +38,7 @@ function getPackageJson(projectPath: string) {
             const content = fs.readFileSync(pkgPathUnderscore, 'utf-8');
             return JSON.parse(content);
         } catch (e: any) {
-            throw new Error(`Failed to read _package.json: ${e.message}`);
+             console.warn(`Failed to read _package.json: ${e.message}`);
         }
     }
     
@@ -47,12 +48,59 @@ function getPackageJson(projectPath: string) {
             const content = fs.readFileSync(pkgPath, 'utf-8');
             return JSON.parse(content);
         } catch (e: any) {
-            throw new Error(`Failed to read package.json: ${e.message}`);
+             console.warn(`Failed to read package.json: ${e.message}`);
         }
     }
     
     return null;
 }
+
+// Helper to look for pom.xml or _pom.xml
+function getPomXml(projectPath: string) {
+    const pomPath = path.join(projectPath, 'pom.xml');
+    const pomPathUnderscore = path.join(projectPath, '_pom.xml');
+    
+    // Check if we are inside public/stackscan
+    const isInsideStackScanDir = projectPath.includes(path.join('public', 'stackscan'));
+
+    // Priority 1: Check for active pom.xml and rename it
+    if (fs.existsSync(pomPath) && isInsideStackScanDir) {
+        try {
+            console.log(`Renaming ${pomPath} to ${pomPathUnderscore}`);
+            fs.renameSync(pomPath, pomPathUnderscore);
+        } catch (e: any) {
+            console.warn(`Failed to rename pom.xml to _pom.xml: ${e.message}`);
+        }
+    }
+    
+    // Read _pom.xml or pom.xml
+    let xmlContent: string | null = null;
+    if (fs.existsSync(pomPathUnderscore)) {
+        try {
+            xmlContent = fs.readFileSync(pomPathUnderscore, 'utf-8');
+        } catch (e: any) {
+            console.warn(`Failed to read _pom.xml: ${e.message}`);
+        }
+    } else if (fs.existsSync(pomPath)) {
+        try {
+            xmlContent = fs.readFileSync(pomPath, 'utf-8');
+        } catch (e: any) {
+            console.warn(`Failed to read pom.xml: ${e.message}`);
+        }
+    }
+    
+    if (xmlContent) {
+        try {
+            const parser = new XMLParser();
+            return parser.parse(xmlContent);
+        } catch (e: any) {
+            console.warn(`Failed to parse XML: ${e.message}`);
+        }
+    }
+    
+    return null;
+}
+
 
 const CATEGORY_PRIORITY = [
   "language",
@@ -112,12 +160,34 @@ interface SyncOptions {
 
 async function analyzeProject(projectPath: string, options: SyncOptions): Promise<any[]> {
     const pkg = getPackageJson(projectPath);
-    if (!pkg) {
-        throw new Error(`No package.json or _package.json found at ${projectPath}`);
+    const pom = getPomXml(projectPath);
+
+    if (!pkg && !pom) {
+        throw new Error(`No package.json or pom.xml found at ${projectPath}`);
     }
 
     // 1. Detect Tech
-    const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
+    const allDeps: Record<string, any> = {};
+
+    // Process package.json
+    if (pkg) {
+        Object.assign(allDeps, pkg.dependencies, pkg.devDependencies);
+    }
+
+    // Process pom.xml
+    if (pom && pom.project && pom.project.dependencies && pom.project.dependencies.dependency) {
+        let deps = pom.project.dependencies.dependency;
+        if (!Array.isArray(deps)) {
+            deps = [deps];
+        }
+        
+        deps.forEach((d: any) => {
+             // Map groupId:artifactId and just artifactId
+             if (d.artifactId) allDeps[d.artifactId] = "latest";
+             if (d.groupId && d.artifactId) allDeps[`${d.groupId}:${d.artifactId}`] = "latest";
+        });
+    }
+
     const detectedTechs: any[] = [];
 
     Object.keys(allDeps).forEach(dep => {
@@ -261,8 +331,12 @@ async function scan(targetPath?: string | object, optionsOrUndefined?: SyncOptio
 
   for (const dir of projectDirs) {
     const projectPath = path.join(BASE_DIR, dir.name);
+    
+    // Check for package.json OR pom.xml (or their underscored variants)
+    const hasPackageJson = fs.existsSync(path.join(projectPath, 'package.json')) || fs.existsSync(path.join(projectPath, '_package.json'));
+    const hasPomXml = fs.existsSync(path.join(projectPath, 'pom.xml')) || fs.existsSync(path.join(projectPath, '_pom.xml'));
 
-    if (fs.existsSync(path.join(projectPath, 'package.json'))) {
+    if (hasPackageJson || hasPomXml) {
       try {
         const techsWithUrls = await analyzeProject(projectPath, options);
         
@@ -288,7 +362,7 @@ async function scan(targetPath?: string | object, optionsOrUndefined?: SyncOptio
         console.error(`❌ Error processing ${dir.name}:`, err.message);
       }
     } else {
-      console.warn(`⚠️  Skipping "${dir.name}": No package.json found.`);
+      console.warn(`⚠️  Skipping "${dir.name}": No package.json or pom.xml found.`);
     }
   }
 

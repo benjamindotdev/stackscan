@@ -82,6 +82,20 @@ export const techDefinitions: TechDefinition[] = [
     "frameworks": []
   },
   {
+    "id": "kotlin",
+    "name": "Kotlin",
+    "aliases": [
+      "kotlin-stdlib",
+      "kotlin-runtime",
+      "org.jetbrains.kotlin:kotlin-stdlib",
+      "org.jetbrains.kotlin:kotlin-reflect",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    ],
+    "category": "language",
+    "logo": "language/kotlin.svg",
+    "frameworks": []
+  },
+  {
     "id": "c",
     "name": "C#",
     "aliases": [
@@ -646,6 +660,43 @@ export const techDefinitions: TechDefinition[] = [
     "frameworks": []
   },
   {
+    "id": "junit",
+    "name": "JUnit",
+    "aliases": [
+      "junit",
+      "junit-jupiter",
+      "org.junit.jupiter:junit-jupiter-api",
+      "org.junit.jupiter:junit-jupiter-engine"
+    ],
+    "category": "testing",
+    "logo": "testing/junit.svg",
+    "frameworks": []
+  },
+  {
+    "id": "mockito",
+    "name": "Mockito",
+    "aliases": [
+      "mockito-core",
+      "mockito-junit-jupiter",
+      "org.mockito:mockito-core"
+    ],
+    "category": "testing",
+    "logo": "testing/junit.svg",
+    "frameworks": []
+  },
+  {
+    "id": "testcontainers",
+    "name": "Testcontainers",
+    "aliases": [
+      "testcontainers",
+      "org.testcontainers:testcontainers",
+      "org.testcontainers:junit-jupiter"
+    ],
+    "category": "testing",
+    "logo": "testing/junit.svg",
+    "frameworks": []
+  },
+  {
     "id": "jest",
     "name": "Jest",
     "aliases": [
@@ -948,7 +999,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "graphql",
     "name": "GraphQL",
     "aliases": [
-      "graphql"
+      "graphql",
+      "graphql-java",
+      "graphql-spring-boot-starter"
     ],
     "category": "api",
     "logo": "api/graphql.svg",
@@ -958,7 +1011,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "apolloclient",
     "name": "Apollo Client",
     "aliases": [
-      "@apollo/client"
+      "@apollo/client",
+      "apollo-runtime",
+      "apollo-api"
     ],
     "category": "api",
     "logo": "api/apollographql.svg",
@@ -1039,6 +1094,7 @@ export const techDefinitions: TechDefinition[] = [
     "id": "postgresql",
     "name": "PostgreSQL",
     "aliases": [
+      "postgresql",
       "pg",
       "pg-promise",
       "node-postgres"
@@ -1052,7 +1108,9 @@ export const techDefinitions: TechDefinition[] = [
     "name": "MySQL",
     "aliases": [
       "mysql",
-      "mysql2"
+      "mysql2",
+      "mysql-connector-j",
+      "mysql-connector-java"
     ],
     "category": "database",
     "logo": "database/mysql.svg",
@@ -1062,7 +1120,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "mariadb",
     "name": "MariaDB",
     "aliases": [
-      "mariadb"
+      "mariadb",
+      "mariadb-java-client"
     ],
     "category": "database",
     "logo": "database/mariadb.svg",
@@ -1073,7 +1132,8 @@ export const techDefinitions: TechDefinition[] = [
     "name": "SQLite",
     "aliases": [
       "sqlite3",
-      "better-sqlite3"
+      "better-sqlite3",
+      "sqlite-jdbc"
     ],
     "category": "database",
     "logo": "database/sqlite.svg",
@@ -1083,7 +1143,11 @@ export const techDefinitions: TechDefinition[] = [
     "id": "mongodb",
     "name": "MongoDB",
     "aliases": [
-      "mongodb"
+      "mongodb",
+      "mongodb-driver-sync",
+      "mongodb-driver-core",
+      "mongo-java-driver",
+      "spring-boot-starter-data-mongodb"
     ],
     "category": "database",
     "logo": "database/mongodb.svg",
@@ -1095,7 +1159,10 @@ export const techDefinitions: TechDefinition[] = [
     "aliases": [
       "redis",
       "ioredis",
-      "@redis/client"
+      "@redis/client",
+      "jedis",
+      "lettuce-core",
+      "spring-boot-starter-data-redis"
     ],
     "category": "database",
     "logo": "database/redis.svg",
@@ -1105,7 +1172,10 @@ export const techDefinitions: TechDefinition[] = [
     "id": "elasticsearch",
     "name": "Elasticsearch",
     "aliases": [
-      "@elastic/elasticsearch"
+      "@elastic/elasticsearch",
+      "elasticsearch-java",
+      "elasticsearch-rest-high-level-client",
+      "spring-boot-starter-data-elasticsearch"
     ],
     "category": "database",
     "logo": "database/elasticsearch.svg",
@@ -1115,7 +1185,10 @@ export const techDefinitions: TechDefinition[] = [
     "id": "cassandra",
     "name": "Cassandra",
     "aliases": [
-      "cassandra-driver"
+      "cassandra-driver",
+      "cassandra-driver-core",
+      "java-driver-core",
+      "spring-boot-starter-data-cassandra"
     ],
     "category": "database",
     "logo": "database/apachecassandra.svg",
@@ -1125,7 +1198,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "dynamodb",
     "name": "DynamoDB",
     "aliases": [
-      "@aws-sdk/client-dynamodb"
+      "@aws-sdk/client-dynamodb",
+      "aws-java-sdk-dynamodb",
+      "dynamodb"
     ],
     "category": "database",
     "logo": "database/amazondynamodb.svg",
@@ -1135,7 +1210,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "firestore",
     "name": "Firestore",
     "aliases": [
-      "@google-cloud/firestore"
+      "@google-cloud/firestore",
+      "google-cloud-firestore"
     ],
     "category": "database",
     "logo": "auth/firebase.svg",
@@ -1145,7 +1221,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "supabase",
     "name": "Supabase",
     "aliases": [
-      "@supabase/supabase-js"
+      "@supabase/supabase-js",
+      "supabase-java"
     ],
     "category": "database",
     "logo": "database/supabase.svg",
@@ -1511,7 +1588,9 @@ export const techDefinitions: TechDefinition[] = [
     "name": "Docker",
     "aliases": [
       "docker",
-      "dockerode"
+      "dockerode",
+      "docker-java",
+      "testcontainers"
     ],
     "category": "container",
     "logo": "container/docker.svg",
@@ -1531,7 +1610,10 @@ export const techDefinitions: TechDefinition[] = [
     "id": "kubernetes",
     "name": "Kubernetes",
     "aliases": [
-      "kubernetes"
+      "kubernetes",
+      "@kubernetes/client-node",
+      "kubernetes-client",
+      "spring-cloud-starter-kubernetes-client-all"
     ],
     "category": "container",
     "logo": "container/kubernetes.svg",
@@ -1541,7 +1623,8 @@ export const techDefinitions: TechDefinition[] = [
     "id": "terraform",
     "name": "Terraform",
     "aliases": [
-      "terraform"
+      "terraform",
+      "cdktf"
     ],
     "category": "devops",
     "logo": "devops/terraform.svg",
@@ -1561,7 +1644,9 @@ export const techDefinitions: TechDefinition[] = [
     "id": "pulumi",
     "name": "Pulumi",
     "aliases": [
-      "@pulumi/pulumi"
+      "@pulumi/pulumi",
+      "pulumi",
+      "pulumi-java"
     ],
     "category": "devops",
     "logo": "devops/pulumi.svg",
@@ -1583,7 +1668,12 @@ export const techDefinitions: TechDefinition[] = [
     "aliases": [
       "aws-sdk",
       "@aws-sdk/client-s3",
-      "@aws-sdk/client-lambda"
+      "@aws-sdk/client-lambda",
+      "aws-java-sdk",
+      "aws-java-sdk-core",
+      "aws-java-sdk-s3",
+      "aws-java-sdk-lambda",
+      "software.amazon.awssdk"
     ],
     "category": "cloud",
     "logo": "cloud/aws.svg",
@@ -1593,7 +1683,11 @@ export const techDefinitions: TechDefinition[] = [
     "id": "azure",
     "name": "Azure",
     "aliases": [
-      "@azure/core-client"
+      "@azure/core-client",
+      "azure-core",
+      "azure-storage-blob",
+      "azure-identity",
+      "spring-cloud-azure-starter"
     ],
     "category": "cloud",
     "logo": "cloud/microsoftazure.svg",
@@ -1603,7 +1697,11 @@ export const techDefinitions: TechDefinition[] = [
     "id": "googlecloud",
     "name": "Google Cloud",
     "aliases": [
-      "@google-cloud/storage"
+      "@google-cloud/storage",
+      "google-cloud-storage",
+      "google-cloud-pubsub",
+      "google-cloud-core",
+      "spring-cloud-gcp-starter"
     ],
     "category": "cloud",
     "logo": "cloud/googlecloud.svg",
@@ -1962,6 +2060,83 @@ export const techDefinitions: TechDefinition[] = [
     "frameworks": []
   },
   {
+    "id": "lombok",
+    "name": "Lombok",
+    "aliases": [
+      "org.projectlombok:lombok",
+      "lombok"
+    ],
+    "category": "utility",
+    "logo": "defaults/wrench.svg",
+    "frameworks": []
+  },
+  {
+    "id": "log4j",
+    "name": "Log4j",
+    "aliases": [
+      "org.apache.logging.log4j:log4j-core",
+      "log4j"
+    ],
+    "category": "utility",
+    "logo": "defaults/wrench.svg",
+    "frameworks": []
+  },
+  {
+    "id": "slf4j",
+    "name": "SLF4J",
+    "aliases": [
+      "org.slf4j:slf4j-api",
+      "slf4j-api"
+    ],
+    "category": "utility",
+    "logo": "defaults/wrench.svg",
+    "frameworks": []
+  },
+  {
+    "id": "jackson",
+    "name": "Jackson",
+    "aliases": [
+      "com.fasterxml.jackson.core:jackson-databind",
+      "jackson-databind"
+    ],
+    "category": "utility",
+    "logo": "defaults/wrench.svg",
+    "frameworks": []
+  },
+  {
+    "id": "gson",
+    "name": "Gson",
+    "aliases": [
+      "com.google.code.gson:gson",
+      "gson"
+    ],
+    "category": "utility",
+    "logo": "defaults/wrench.svg",
+    "frameworks": []
+  },
+  {
+    "id": "commonslang",
+    "name": "Apache Commons Lang",
+    "aliases": [
+      "org.apache.commons:commons-lang3",
+      "commons-lang3"
+    ],
+    "category": "utility",
+    "logo": "defaults/wrench.svg",
+    "frameworks": []
+  },
+  {
+    "id": "guava",
+    "name": "Guava",
+    "aliases": [
+      "com.google.guava:guava",
+      "guava"
+    ],
+    "category": "utility",
+    "logo": "defaults/wrench.svg",
+    "frameworks": []
+  },
+  {
     "id": "lodash",
     "name": "Lodash",
     "aliases": [
@@ -2140,7 +2315,12 @@ export const techDefinitions: TechDefinition[] = [
     "id": "springboot",
     "name": "Spring Boot",
     "aliases": [
-      "spring-boot"
+      "spring-boot",
+      "spring-boot-starter",
+      "spring-boot-starter-web",
+      "spring-boot-starter-data-jpa",
+      "spring-boot-starter-security",
+      "spring-boot-starter-test"
     ],
     "category": "backend",
     "logo": "backend/springboot.svg",

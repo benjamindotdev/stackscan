@@ -46,6 +46,7 @@
     "commander": "^11.0.0",
     "cosmiconfig": "^9.0.0",
     "fast-glob": "^3.3.2",
+    "fast-xml-parser": "^5.3.6",
     "fs-extra": "^11.2.0",
     "lucide-static": "^0.555.0",
     "ora": "^7.0.1"
